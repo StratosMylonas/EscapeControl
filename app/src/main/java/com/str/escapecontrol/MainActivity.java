@@ -61,7 +61,9 @@ public class MainActivity extends AppCompatActivity {
                         toast.show();
                     }
                     else{
-                        jsonAsync.cancel(true);
+                        if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
+                            jsonAsync.cancel(true);
+                        }
                         timer.cancel();
                         setRepeatingAsyncTask();
                     }
@@ -81,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
             roomlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    jsonAsync.cancel(true);
+                    if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
+                        jsonAsync.cancel(true);
+                    }
                     timer.cancel();
                     if (position == 0) {
                         if (jsonArray == null){
@@ -100,7 +104,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        jsonAsync.cancel(true);
+        if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
+            jsonAsync.cancel(true);
+        }
         timer.cancel();
         finish();
     }

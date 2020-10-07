@@ -54,7 +54,9 @@ public class Room1 extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 timer.cancel();
-                jsonAsync.cancel(true);
+                if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
+                    jsonAsync.cancel(true);
+                }
                 if (doorLockSwitch.isChecked()){
                     doorLockStr = "locked";
                 }
@@ -70,7 +72,9 @@ public class Room1 extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 timer.cancel();
-                jsonAsync.cancel(true);
+                if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
+                    jsonAsync.cancel(true);
+                }
                 if (relay1Switch.isChecked()){
                     relay1Str = "on";
                 }
@@ -106,9 +110,10 @@ public class Room1 extends AppCompatActivity {
         Room1.this.finish();
     }
 
-    private class AsyncDataClass extends AsyncTask<String, Void, String> {
+    private class AsyncDataClass extends AsyncTask<String, Void, MainMenuRoomObject> {
+
         @Override
-        protected String doInBackground(String... params) {
+        protected MainMenuRoomObject doInBackground(String... params) {
             byte[] address = {(byte)192, (byte)168, (byte) 1, (byte) 199};
             try {
                 InetAddress addr = InetAddress.getByAddress(address);
@@ -134,21 +139,32 @@ public class Room1 extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return jsonResult;
+
+            if (jsonResult.equals("")){
+                return null;
+            }
+
+            System.out.println("Resulted Value: " + jsonResult);
+            List<MainMenuRoomObject> parsedObject = returnParsedJsonObject(jsonResult);
+            if (parsedObject == null){
+                return null;
+            }
+            MainMenuRoomObject roomObject;
+            roomObject = parsedObject.get(0);
+
+            return roomObject;
         }
 
         @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
+        protected void onPostExecute(MainMenuRoomObject roomObject) {
+            super.onPostExecute(roomObject);
 
-        @Override
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-
-            System.out.println("Resulted Value: " + result);
-            List<MainMenuRoomObject> parsedObject = returnParsedJsonObject(result);
-            MainMenuRoomObject roomObject = parsedObject.get(0);
+            if (roomObject == null){
+                doorLockSwitch.setChecked(false);
+                relay1Switch.setChecked(false);
+                relay2Switch.setChecked(false);
+                return;
+            }
 
             roomName = findViewById(R.id.roomNameTextView);
             roomStatus = findViewById(R.id.roomStatusTextView);
@@ -166,24 +182,24 @@ public class Room1 extends AppCompatActivity {
             relay1State.setText("Relay 1: " + roomObject.getRelay1State());
             relay2State.setText("Relay 2: " + roomObject.getRelay2State());
 
-            if (roomObject.getDoorLockState().equals("locked")) {
+            if (roomObject.getDoorLockState().equals("locked")){
                 doorLockSwitch.setChecked(true);
             }
-            else {
+            else{
                 doorLockSwitch.setChecked(false);
             }
 
-            if (roomObject.getRelay1State().equals("on")) {
+            if (roomObject.getRelay1State().equals("on")){
                 relay1Switch.setChecked(true);
             }
-            else {
+            else{
                 relay1Switch.setChecked(false);
             }
 
-            if (roomObject.getRelay2State().equals("on")) {
+            if (roomObject.getRelay2State().equals("on")){
                 relay2Switch.setChecked(true);
             }
-            else {
+            else{
                 relay2Switch.setChecked(false);
             }
         }
@@ -212,6 +228,10 @@ public class Room1 extends AppCompatActivity {
             jsonArray = new JSONArray(result);
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+
+        if (jsonArray == null){
+            return null;
         }
 
         for(int i = 0; i < jsonArray.length(); i++){

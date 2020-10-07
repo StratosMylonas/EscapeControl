@@ -24,6 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:contentDescription="@string/logo"
                 app:srcCompat="@drawable/logo" />
         </LinearLayout>
 
@@ -39,7 +40,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="50dp"
-                android:text="Remote Control App\nVersion 0.1"
+                android:text="@string/about_version"
                 android:textAlignment="center"
                 android:textSize="18sp"
                 android:textColor="#FFFFFF" />
@@ -57,7 +58,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="50dp"
-                android:text="Created by\nStratos Mylonas"
+                android:text="@string/about_created_by"
                 android:textAlignment="center"
                 android:textSize="16sp"
                 android:textColor="#FFFFFF" />
