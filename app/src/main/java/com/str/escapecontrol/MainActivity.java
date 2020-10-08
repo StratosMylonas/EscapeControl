@@ -83,9 +83,6 @@ public class MainActivity extends AppCompatActivity {
             roomlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
-                        jsonAsync.cancel(true);
-                    }
                     timer.cancel();
                     if (position == 0) {
                         if (jsonArray == null){
@@ -93,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
                             toast.show();
                         }
                         else {
+                            if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
+                                jsonAsync.cancel(true);
+                            }
                             Intent intent = new Intent(MainActivity.this, Room1.class);
                             startActivity(intent);
                         }
@@ -104,8 +104,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed(){
-        if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
-            jsonAsync.cancel(true);
+        if (jsonArray!= null) {
+            if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
+                jsonAsync.cancel(true);
+            }
         }
         timer.cancel();
         finish();

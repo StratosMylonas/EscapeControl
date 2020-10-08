@@ -54,17 +54,18 @@ public class Room1 extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 timer.cancel();
-                if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
-                    jsonAsync.cancel(true);
+                if (jsonAsync != null) {
+                    if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
+                        jsonAsync.cancel(true);
+                    }
+                    if (doorLockSwitch.isChecked()) {
+                        doorLockStr = "locked";
+                    } else {
+                        doorLockStr = "unlocked";
+                    }
+                    new UpdateDatabaseAsyncTask().execute();
+                    setRepeatingAsyncTask();
                 }
-                if (doorLockSwitch.isChecked()){
-                    doorLockStr = "locked";
-                }
-                else{
-                    doorLockStr = "unlocked";
-                }
-                new UpdateDatabaseAsyncTask().execute();
-                setRepeatingAsyncTask();
             }
         });
 
@@ -72,17 +73,18 @@ public class Room1 extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 timer.cancel();
-                if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
-                    jsonAsync.cancel(true);
+                if (jsonAsync != null) {
+                    if (jsonAsync.getStatus() == AsyncTask.Status.RUNNING) {
+                        jsonAsync.cancel(true);
+                    }
+                    if (relay1Switch.isChecked()) {
+                        relay1Str = "on";
+                    } else {
+                        relay1Str = "off";
+                    }
+                    new UpdateDatabaseAsyncTask().execute();
+                    setRepeatingAsyncTask();
                 }
-                if (relay1Switch.isChecked()){
-                    relay1Str = "on";
-                }
-                else{
-                    relay1Str = "off";
-                }
-                new UpdateDatabaseAsyncTask().execute();
-                setRepeatingAsyncTask();
             }
         });
 
@@ -90,22 +92,25 @@ public class Room1 extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 timer.cancel();
-                jsonAsync.cancel(true);
-                if (relay2Switch.isChecked()){
-                    relay2Str = "on";
+                if (jsonAsync != null) {
+                    jsonAsync.cancel(true);
+                    if (relay2Switch.isChecked()) {
+                        relay2Str = "on";
+                    } else {
+                        relay2Str = "off";
+                    }
+                    new UpdateDatabaseAsyncTask().execute();
+                    setRepeatingAsyncTask();
                 }
-                else{
-                    relay2Str = "off";
-                }
-                new UpdateDatabaseAsyncTask().execute();
-                setRepeatingAsyncTask();
             }
         });
     }
 
     @Override
     public void onBackPressed(){
-        jsonAsync.cancel(true);
+        if (jsonAsync!= null){
+            jsonAsync.cancel(true);
+        }
         timer.cancel();
         Room1.this.finish();
     }
