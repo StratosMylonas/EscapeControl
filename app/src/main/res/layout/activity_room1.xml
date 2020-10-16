@@ -19,7 +19,7 @@
             android:alpha=".50"
             android:contentDescription="@string/room_image_desc"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/walking" />
+            app:srcCompat="@drawable/atlantis" />
 
         <TextView
             android:id="@+id/roomNameTextView"

@@ -15,7 +15,15 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".Room1"
+            android:name=".Atlantis"
+            android:label="@string/title_activity_atlantis"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
+
+        <activity
+            android:name=".Mansion"
+            android:label="Mansion"
+            android:theme="@style/AppTheme.NoActionBar"
             android:configChanges="orientation|screenSize|keyboardHidden"/>
 
         <uses-library
@@ -31,7 +39,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
