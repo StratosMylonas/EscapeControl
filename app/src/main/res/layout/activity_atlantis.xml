@@ -46,21 +46,266 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-                <ScrollView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="States"
+                        android:textColor="#FFFFFF"
+                        android:textSize="25sp"
+                        android:layout_gravity="center_horizontal"
+                        android:textAlignment="center"/>
 
+                    <TextView
+                        android:id="@+id/tritons_key"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Triton's Key:"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:textSize="20sp"/>
 
-                </ScrollView>
+                    <TextView
+                        android:id="@+id/room_door_1_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1st - 2nd Room Door:"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:textSize="20sp"/>
 
-            </LinearLayout>
+                    <TextView
+                        android:id="@+id/holy_molly"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Holy Molly:"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:textSize="20sp"/>
 
+                    <TextView
+                        android:id="@+id/poseidons_chest"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Poseidon's Chest:"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:textSize="20sp"/>
 
+                    <TextView
+                        android:id="@+id/hexagon_cabinets"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Hexagon Cabinets: "
+                        android:textColor="#FFFFFF"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginStart="10dp"
+                        android:textSize="20sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Actions"
+                        android:textColor="#FFFFFF"
+                        android:layout_marginTop="10dp"
+                        android:textSize="25sp"
+                        android:layout_gravity="center_horizontal"
+                        android:textAlignment="center"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:weightSum="100"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal"
+                        android:baselineAligned="false">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="50"
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/waterfall_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_alignLeft="@id/room_door_1_2_btn"
+                                android:layout_alignStart="@id/room_door_1_2_btn"
+                                android:layout_alignRight="@id/room_door_1_2_btn"
+                                android:layout_alignEnd="@id/room_door_1_2_btn"
+                                android:text="Waterfall" />
+
+                            <Button
+                                android:id="@+id/tritons_key_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/waterfall_btn"
+                                android:layout_alignLeft="@id/room_door_1_2_btn"
+                                android:layout_alignStart="@id/room_door_1_2_btn"
+                                android:layout_alignRight="@id/room_door_1_2_btn"
+                                android:layout_alignEnd="@id/room_door_1_2_btn"
+                                android:layout_marginTop="10dp"
+                                android:text="Triton's Key" />
+
+                            <Button
+                                android:id="@+id/column1_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/tritons_key_btn"
+                                android:layout_alignLeft="@id/room_door_1_2_btn"
+                                android:layout_alignStart="@id/room_door_1_2_btn"
+                                android:layout_alignRight="@id/room_door_1_2_btn"
+                                android:layout_alignEnd="@id/room_door_1_2_btn"
+                                android:layout_marginTop="10dp"
+                                android:text="Column 1" />
+
+                            <Button
+                                android:id="@+id/column2_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/column1_btn"
+                                android:layout_alignLeft="@id/room_door_1_2_btn"
+                                android:layout_alignStart="@id/room_door_1_2_btn"
+                                android:layout_alignRight="@id/room_door_1_2_btn"
+                                android:layout_alignEnd="@id/room_door_1_2_btn"
+                                android:layout_marginTop="10dp"
+                                android:text="Column 2" />
+
+                            <Button
+                                android:id="@+id/column3_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/column2_btn"
+                                android:layout_alignLeft="@id/room_door_1_2_btn"
+                                android:layout_alignStart="@id/room_door_1_2_btn"
+                                android:layout_alignRight="@id/room_door_1_2_btn"
+                                android:layout_alignEnd="@id/room_door_1_2_btn"
+                                android:layout_marginTop="10dp"
+                                android:text="Column 3" />
+
+                            <Button
+                                android:id="@+id/room_door_1_2_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/column3_btn"
+                                android:layout_marginTop="10dp"
+                                android:layout_centerHorizontal="true"
+                                android:text="1st-2nd Room Door" />
+
+                            <Button
+                                android:id="@+id/reset_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_below="@id/room_door_1_2_btn"
+                                android:layout_alignLeft="@id/room_door_1_2_btn"
+                                android:layout_alignStart="@id/room_door_1_2_btn"
+                                android:layout_alignRight="@id/room_door_1_2_btn"
+                                android:layout_alignEnd="@id/room_door_1_2_btn"
+                                android:layout_marginTop="10dp"
+                                android:textColor="#AA0000"
+                                android:text="Reset" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="50"
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/poseidon_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignLeft="@id/hexagon_cabinets_btn"
+                                android:layout_alignStart="@id/hexagon_cabinets_btn"
+                                android:layout_alignRight="@id/hexagon_cabinets_btn"
+                                android:layout_alignEnd="@id/hexagon_cabinets_btn"
+                                android:text="Poseidon" />
+
+                            <Button
+                                android:id="@+id/hexagon_pattern_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_below="@id/poseidon_btn"
+                                android:layout_alignLeft="@id/hexagon_cabinets_btn"
+                                android:layout_alignStart="@id/hexagon_cabinets_btn"
+                                android:layout_alignRight="@id/hexagon_cabinets_btn"
+                                android:layout_alignEnd="@id/hexagon_cabinets_btn"
+                                android:text="Hexagon Pattern" />
+
+                            <Button
+                                android:id="@+id/hexagon_cabinets_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_below="@id/hexagon_pattern_btn"
+                                android:layout_centerHorizontal="true"
+                                android:text=" Hexagon Cabinets " />
+
+                            <Button
+                                android:id="@+id/trident_unlock_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_below="@id/hexagon_cabinets_btn"
+                                android:layout_alignLeft="@id/hexagon_cabinets_btn"
+                                android:layout_alignStart="@id/hexagon_cabinets_btn"
+                                android:layout_alignRight="@id/hexagon_cabinets_btn"
+                                android:layout_alignEnd="@id/hexagon_cabinets_btn"
+                                android:text="Trident Unlock" />
+
+                            <Button
+                                android:id="@+id/holy_molly_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_below="@id/trident_unlock_btn"
+                                android:layout_alignLeft="@id/hexagon_cabinets_btn"
+                                android:layout_alignStart="@id/hexagon_cabinets_btn"
+                                android:layout_alignRight="@id/hexagon_cabinets_btn"
+                                android:layout_alignEnd="@id/hexagon_cabinets_btn"
+                                android:text="Holy Molly" />
+
+                            <Button
+                                android:id="@+id/exit_btn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:layout_below="@id/holy_molly_btn"
+                                android:layout_alignLeft="@id/hexagon_cabinets_btn"
+                                android:layout_alignStart="@id/hexagon_cabinets_btn"
+                                android:layout_alignRight="@id/hexagon_cabinets_btn"
+                                android:layout_alignEnd="@id/hexagon_cabinets_btn"
+                                android:text="Exit" />
+
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </ScrollView>
 
         </LinearLayout>
 
