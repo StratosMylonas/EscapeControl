@@ -1,7 +1,9 @@
 package com.str.escapecontrol;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Atlantis extends AppCompatActivity {
 
@@ -85,133 +88,213 @@ public class Atlantis extends AppCompatActivity {
         waterfall_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (waterfall_btn_str.equals("on"))
-                    waterfall_btn_str = "off";
-                else
+                if (waterfall_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
                     waterfall_btn_str = "on";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
+                }
             }
         });
 
         tritons_key_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (tritons_key_btn_str.equals("on"))
-                    tritons_key_btn_str = "off";
-                else
+                if (tritons_key_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
                     tritons_key_btn_str = "on";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
+                }
             }
         });
 
         column1_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (column1_btn_str.equals("on"))
-                    column1_btn_str = "off";
-                else
+                if (column1_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
                     column1_btn_str = "on";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
+                }
             }
         });
 
         column2_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (column2_btn_str.equals("on"))
-                    column2_btn_str = "off";
-                else
+                if (column2_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
                     column2_btn_str = "on";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
+                }
             }
         });
 
         column3_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (column3_btn_str.equals("on"))
-                    column3_btn_str = "off";
-                else
+                if (column3_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
                     column3_btn_str = "on";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
+                }
             }
         });
 
         room_door_1_2_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (room_door_1_2_btn_str.equals("on"))
-                    room_door_1_2_btn_str = "off";
-                else
+                if (room_door_1_2_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
                     room_door_1_2_btn_str = "on";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
+                }
             }
         });
 
         holy_molly_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (holy_molly_btn_str.equals("on"))
-                    holy_molly_btn_str = "off";
-                else
+                if (holy_molly_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
                     holy_molly_btn_str = "on";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
+                }
             }
         });
 
         poseidon_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (poseidon_btn_str.equals("on"))
-                    poseidon_btn_str = "off";
-                else
+                if (poseidon_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
                     poseidon_btn_str = "on";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
+                }
             }
         });
 
         hexagon_pattern_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (hexagon_pattern_btn_str.equals("on"))
-                    hexagon_pattern_btn_str = "off";
-                else
+                if (hexagon_pattern_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
                     hexagon_pattern_btn_str = "on";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
+                }
             }
         });
 
         hexagon_cabinets_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (hexagon_cabinets_btn_str.equals("on"))
-                    hexagon_cabinets_btn_str = "off";
-                else
+                if (hexagon_cabinets_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
                     hexagon_cabinets_btn_str = "on";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
+                }
             }
         });
 
         trident_unlock_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (trident_unlock_btn_str.equals("on"))
-                    trident_unlock_btn_str = "off";
-                else
+                if (trident_unlock_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
                     trident_unlock_btn_str = "on";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
+                }
             }
         });
 
         exit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (exit_btn_str.equals("on"))
-                    exit_btn_str = "off";
-                else
+                if (exit_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                else {
                     exit_btn_str = "on";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
+                }
             }
         });
 
         reset_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (reset_btn_str.equals("on"))
-                    reset_btn_str = "off";
-                else
-                    reset_btn_str = "on";
+                if (reset_btn_str.equals("on")) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
+                    toast.show();
+                } else {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Atlantis.this);
+                    alertDialogBuilder.setMessage("Do you want to reset?");
+                    alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            reset_btn_str = "on";
+                            UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                            updateDatabaseAsyncTask.execute("");
+                        }
+                    });
+
+                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
             }
         });
-
     }
 
     @Override
@@ -280,7 +363,20 @@ public class Atlantis extends AppCompatActivity {
             room_door_1_2.setText("1st - 2nd Room Door: " + roomObject.getRoom_door_1_2_status());
             holy_molly.setText("Holy Molly: " + roomObject.getHoly_molly_status());
             poseidons_chest.setText("Poseidon's Chest: " + roomObject.getPoseidons_chest_status());
-            hexagon_cabinets.setText("Hexagon Cabinets: " + roomObject.getHexagon_cabinet_status());
+            hexagon_cabinets.setText("Hexagon Cabinets: " + roomObject.getHexagon_cabinets_status());
+            waterfall_btn_str = roomObject.getWaterfall_btn();
+            tritons_key_btn_str = roomObject.getTritons_key_btn();
+            column1_btn_str = roomObject.getColumn1_btn();
+            column2_btn_str = roomObject.getColumn2_btn();
+            column3_btn_str = roomObject.getColumn3_btn();
+            room_door_1_2_btn_str = roomObject.getRoom_door_1_2_btn();
+            holy_molly_btn_str = roomObject.getHoly_molly_btn();
+            poseidon_btn_str = roomObject.getPoseidon_btn();
+            hexagon_pattern_btn_str = roomObject.getHexagon_pattern_btn();
+            hexagon_cabinets_btn_str = roomObject.getHexagon_cabinets_btn();
+            trident_unlock_btn_str = roomObject.getTrident_unlock_btn();
+            exit_btn_str = roomObject.getExit_btn();
+            reset_btn_str = roomObject.getReset_btn();
         }
 
         private StringBuilder inputStreamToString(InputStream is) {
@@ -316,12 +412,27 @@ public class Atlantis extends AppCompatActivity {
                 JSONObject jsonChildNode;
                 try {
                     jsonChildNode = jsonArray.getJSONObject(i);
-                    String tritons_key_str = jsonChildNode.getString("tritons_key");
-                    String room_door_1_2_str = jsonChildNode.getString("room_door_1_2");
-                    String holy_molly_str = jsonChildNode.getString("holy_molly");
-                    String poseidons_chest_str = jsonChildNode.getString("poseidons_chest");
-                    String hexagon_cabinets_str = jsonChildNode.getString("hexagon_cabinets");
-                    newItemObject = new AtlantisRoomStatus(tritons_key_str, room_door_1_2_str, holy_molly_str, poseidons_chest_str, hexagon_cabinets_str);
+                    String tritons_key = jsonChildNode.getString("tritons_key");
+                    String room_door_1_2 = jsonChildNode.getString("room_door_1_2");
+                    String holy_molly = jsonChildNode.getString("holy_molly");
+                    String poseidons_chest = jsonChildNode.getString("poseidons_chest");
+                    String hexagon_cabinets = jsonChildNode.getString("hexagon_cabinets");
+                    String waterfall_btn = jsonChildNode.getString("waterfall_btn");
+                    String tritons_key_btn = jsonChildNode.getString("tritons_key_btn");
+                    String column1_btn = jsonChildNode.getString("column1_btn");
+                    String column2_btn = jsonChildNode.getString("column2_btn");
+                    String column3_btn = jsonChildNode.getString("column3_btn");
+                    String room_door_1_2_btn = jsonChildNode.getString("room_door_1_2_btn");
+                    String holy_molly_btn = jsonChildNode.getString("holy_molly_btn");
+                    String poseidon_btn = jsonChildNode.getString("poseidon_btn");
+                    String hexagon_pattern_btn = jsonChildNode.getString("hexagon_pattern_btn");
+                    String hexagon_cabinets_btn = jsonChildNode.getString("hexagon_cabinets_btn");
+                    String trident_unlock_btn = jsonChildNode.getString("trident_unlock_btn");
+                    String exit_btn = jsonChildNode.getString("exit_btn");
+                    String reset_btn = jsonChildNode.getString("reset_btn");
+                    newItemObject = new AtlantisRoomStatus(tritons_key, room_door_1_2, holy_molly, poseidons_chest, hexagon_cabinets, waterfall_btn,
+                                                           tritons_key_btn, column1_btn, column2_btn, column3_btn, room_door_1_2_btn, holy_molly_btn,
+                                                           poseidon_btn, hexagon_pattern_btn, hexagon_cabinets_btn, trident_unlock_btn, exit_btn, reset_btn);
                     jsonObject.add(newItemObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -360,7 +471,7 @@ public class Atlantis extends AppCompatActivity {
 
         protected Integer doInBackground(String... params){
             HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
-            String urlStr = "http://192.168.1.199/updateRoom.php?id=" + 0 +
+            String urlStr = "http://192.168.1.199/EscapeControl/updateAtlantis.php?id=" + 1 +
                             "&tritons_key=" + tritons_key_str +
                             "&room_door_1_2=" + room_door_1_2_str +
                             "&holy_molly=" + holy_molly_str +

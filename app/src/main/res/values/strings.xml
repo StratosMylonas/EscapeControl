@@ -1,10 +1,4 @@
 <resources>
-    <!--    activity_room1.xml    -->
-    <string name="app_name">EscapeControl</string>
-    <string name="room_status_txt">Connecting</string>
-    <string name="room_name">Room</string>
-    <string name="room_image_desc">Room background</string>
-
     <!--    about_custom_dialog.xml    -->
     <string name="logo">Game Over logo</string>
     <string name="about_version">Remote Control App\nVersion 0.1</string>
