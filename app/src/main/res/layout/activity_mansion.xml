@@ -140,8 +140,10 @@
                         android:orientation="horizontal">
 
                         <Button
+                            android:id="@+id/tarrot_combination_1_btn"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:minHeight="70dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginTop="20dp"
@@ -152,6 +154,7 @@
                             android:text="1st Tarrot\nCombination" />
 
                         <Button
+                            android:id="@+id/radio_on_btn"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="20dp"
@@ -171,8 +174,10 @@
                         android:orientation="horizontal">
 
                         <Button
+                            android:id="@+id/tarrot_combination_2_btn"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:minHeight="70dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
@@ -183,6 +188,7 @@
                             android:layout_weight="1"/>
 
                         <Button
+                            android:id="@+id/doll_btn"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="10dp"
@@ -202,8 +208,10 @@
                         android:orientation="horizontal">
 
                         <Button
+                            android:id="@+id/tarrot_combination_3_btn"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:minHeight="70dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
@@ -214,6 +222,7 @@
                             android:layout_weight="1"/>
 
                         <Button
+                            android:id="@+id/shelf_1_btn"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="10dp"
@@ -233,8 +242,10 @@
                         android:orientation="horizontal">
 
                         <Button
+                            android:id="@+id/window_doors_btn"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:minHeight="70dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
@@ -245,6 +256,7 @@
                             android:layout_weight="1"/>
 
                         <Button
+                            android:id="@+id/shelf_2_btn"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="10dp"
@@ -264,8 +276,10 @@
                         android:orientation="horizontal">
 
                         <Button
+                            android:id="@+id/exit_btn"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:minHeight="70dp"
                             android:layout_marginTop="10dp"
                             android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
@@ -276,6 +290,7 @@
                             android:layout_weight="1"/>
 
                         <Button
+                            android:id="@+id/reset_btn"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="10dp"
