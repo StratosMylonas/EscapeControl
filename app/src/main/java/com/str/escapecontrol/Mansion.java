@@ -2,11 +2,20 @@ package com.str.escapecontrol;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -33,7 +42,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Mansion extends AppCompatActivity {
+public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private Timer timer;
     private Mansion.AsyncDataClass jsonAsync;
@@ -45,13 +54,18 @@ public class Mansion extends AppCompatActivity {
            tarrot_combination_2_btn_str = "off", tarrot_combination_3_btn_str = "off", radio_on_btn_str = "off",
            doll_btn_str = "off", shelf_1_btn_str = "off",  shelf_2_btn_str = "off",
            window_doors_btn_str = "off", exit_btn_str = "off", reset_btn_str = "off";
+    SwipeRefreshLayout swipeRefreshLayout;
+    ProgressDialog dialog;
+    boolean firstTimeLoading;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mansion);
         findIds();
+        onClickListeners();
+        dialog = new ProgressDialog(Mansion.this);
         setRepeatingAsyncTask();
-        onClickListeners();;
     }
 
     void findIds(){
@@ -74,6 +88,8 @@ public class Mansion extends AppCompatActivity {
         window_doors_btn = findViewById(R.id.window_doors_btn);
         exit_btn = findViewById(R.id.exit_btn);
         reset_btn = findViewById(R.id.reset_btn);
+
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
     }
 
     void onClickListeners(){
@@ -242,6 +258,24 @@ public class Mansion extends AppCompatActivity {
                 }
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+    }
+
+    @Override
+    public void onRefresh(){
+        if (jsonAsync != null){
+            jsonAsync.cancel(true);
+        }
+        if (timer != null) {
+            timer.cancel();
+        }
+        if (dialog.isShowing()){
+            dialog.dismiss();
+        }
+        setRepeatingAsyncTask();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -249,20 +283,64 @@ public class Mansion extends AppCompatActivity {
         if (jsonAsync != null){
             jsonAsync.cancel(true);
         }
-        timer.cancel();
+        if (timer != null) {
+            timer.cancel();
+        }
+        if (dialog.isShowing()){
+            dialog.dismiss();
+        }
         Mansion.this.finish();
+    }
+
+    boolean checkWifi() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Mansion.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (networkInfo != null) {
+            if (!networkInfo.isConnected()){
+                AlertDialog.Builder builder = new AlertDialog.Builder(Mansion.this);
+                builder.setMessage("WiFi connection required. Do you want to enable WiFi?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Mansion.this.finish();
+                    }
+                });
+                builder.setCancelable(false);
+                builder.show();
+
+            }
+
+            return networkInfo.isConnected();
+        }
+        return false;
     }
 
     private class AsyncDataClass extends AsyncTask<String, Void, MansionRoomStatus> {
 
         @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+            if (firstTimeLoading) {
+                dialog.setMessage("Loading...");
+                dialog.show();
+            }
+        }
+
+        @Override
         protected MansionRoomStatus doInBackground(String... params){
+
             byte[] address = {(byte) 192, (byte) 168, (byte) 1, (byte) 199};
             try {
                 InetAddress addr = InetAddress.getByAddress(address);
                 if (!addr.isReachable(2000)) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Network server not reachable. Please make sure you're connected to the right network", Toast.LENGTH_SHORT);
-                    toast.show();
+                    return null;
                 }
             } catch (UnknownHostException e) {
                 e.printStackTrace();
@@ -382,6 +460,11 @@ public class Mansion extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+
+            if (firstTimeLoading) {
+                dialog.dismiss();
+                firstTimeLoading = false;
+            }
             return jsonObject;
         }
     }
@@ -390,25 +473,28 @@ public class Mansion extends AppCompatActivity {
 
         final Handler handler = new Handler();
         timer = new Timer();
+        firstTimeLoading = true;
 
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            jsonAsync = new Mansion.AsyncDataClass();
-                            jsonAsync.execute("");
-                        } catch (Exception e){
-                            e.printStackTrace();
+        if (checkWifi()) {
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                jsonAsync = new Mansion.AsyncDataClass();
+                                jsonAsync.execute("");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                });
-            }
-        };
+                    });
+                }
+            };
 
-        timer.schedule(task, 0, 1000);
+            timer.schedule(task, 0, 1000);
+        }
     }
 
     private class UpdateDatabaseAsyncTask extends AsyncTask<String, Void, Integer>{

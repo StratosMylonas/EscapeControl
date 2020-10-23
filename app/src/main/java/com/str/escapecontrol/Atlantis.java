@@ -2,11 +2,17 @@ package com.str.escapecontrol;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -34,7 +40,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Atlantis extends AppCompatActivity {
+public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private Timer timer;
     private Atlantis.AsyncDataClass jsonAsync;
@@ -49,6 +55,9 @@ public class Atlantis extends AppCompatActivity {
             column3_btn_str = "off", room_door_1_2_btn_str = "off", holy_molly_btn_str = "off",
             poseidon_btn_str = "off", hexagon_pattern_btn_str = "off", hexagon_cabinets_btn_str = "off",
             trident_unlock_btn_str = "off", exit_btn_str = "off", reset_btn_str = "off";
+    SwipeRefreshLayout swipeRefreshLayout;
+    ProgressDialog dialog;
+    boolean firstTimeLoading;
 
     @Override
 
@@ -57,6 +66,7 @@ public class Atlantis extends AppCompatActivity {
         setContentView(R.layout.activity_atlantis);
         findIds();
         setRepeatingAsyncTask();
+        dialog = new ProgressDialog(Atlantis.this);
         onClickListeners();
     }
 
@@ -82,6 +92,8 @@ public class Atlantis extends AppCompatActivity {
         trident_unlock_btn = findViewById(R.id.trident_unlock_btn);
         exit_btn = findViewById(R.id.exit_btn);
         reset_btn = findViewById(R.id.reset_btn);
+
+        swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
     }
 
     void onClickListeners(){
@@ -295,6 +307,23 @@ public class Atlantis extends AppCompatActivity {
                 }
             }
         });
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+    }
+
+    @Override
+    public void onRefresh(){
+        if (jsonAsync != null){
+            jsonAsync.cancel(true);
+        }
+        if (timer != null) {
+            timer.cancel();
+        }
+        if (dialog.isShowing()){
+            dialog.dismiss();
+        }
+        setRepeatingAsyncTask();
+        swipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -306,7 +335,46 @@ public class Atlantis extends AppCompatActivity {
         Atlantis.this.finish();
     }
 
+    boolean checkWifi() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Mansion.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+        if (networkInfo != null) {
+            if (!networkInfo.isConnected()){
+                AlertDialog.Builder builder = new AlertDialog.Builder(Atlantis.this);
+                builder.setMessage("WiFi connection required. Do you want to enable WiFi?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        Atlantis.this.finish();
+                    }
+                });
+                builder.setCancelable(false);
+                builder.show();
+
+            }
+
+            return networkInfo.isConnected();
+        }
+        return false;
+    }
+
     private class AsyncDataClass extends AsyncTask<String, Void, AtlantisRoomStatus> {
+
+        @Override
+        protected void onPreExecute(){
+            super.onPreExecute();
+            if (firstTimeLoading) {
+                dialog.setMessage("Loading...");
+                dialog.show();
+            }
+        }
 
         @Override
         protected AtlantisRoomStatus doInBackground(String... params) {
@@ -314,8 +382,7 @@ public class Atlantis extends AppCompatActivity {
             try {
                 InetAddress addr = InetAddress.getByAddress(address);
                 if (!addr.isReachable(2000)) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Network server not reachable. Please make sure you're connected to the right network", Toast.LENGTH_SHORT);
-                    toast.show();
+                    return null;
                 }
             } catch (UnknownHostException e) {
                 e.printStackTrace();
@@ -438,6 +505,11 @@ public class Atlantis extends AppCompatActivity {
                     e.printStackTrace();
                 }
             }
+
+            if (firstTimeLoading) {
+                dialog.dismiss();
+                firstTimeLoading = false;
+            }
             return jsonObject;
         }
     }
@@ -446,25 +518,28 @@ public class Atlantis extends AppCompatActivity {
 
         final Handler handler = new Handler();
         timer = new Timer();
+        firstTimeLoading = true;
 
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            jsonAsync = new Atlantis.AsyncDataClass();
-                            jsonAsync.execute("");
-                        } catch (Exception e){
-                            e.printStackTrace();
+        if (checkWifi()) {
+            TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                jsonAsync = new Atlantis.AsyncDataClass();
+                                jsonAsync.execute("");
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
-                    }
-                });
-            }
-        };
+                    });
+                }
+            };
 
-        timer.schedule(task, 0, 1000);
+            timer.schedule(task, 0, 1000);
+        }
     }
 
     private class UpdateDatabaseAsyncTask extends AsyncTask<String, Void, Integer>{
