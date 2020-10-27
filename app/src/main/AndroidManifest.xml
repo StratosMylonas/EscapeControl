@@ -13,19 +13,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".Philosopher"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
+        <activity
+            android:name=".Mission"
+            android:configChanges="orientation|screenSize|keyboardHidden"/>
         <activity
             android:name=".Atlantis"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="@string/title_activity_atlantis"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
-
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Mansion"
+            android:configChanges="orientation|screenSize|keyboardHidden"
             android:label="Mansion"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:configChanges="orientation|screenSize|keyboardHidden">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <uses-library
             android:name="org.apache.http.legacy"

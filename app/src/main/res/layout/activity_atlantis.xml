@@ -15,6 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:src="@drawable/atlantis"
+            android:contentDescription="@string/atlantis_background"
             android:scaleType="centerCrop"/>
 
         <LinearLayout
@@ -23,28 +24,18 @@
             android:orientation="vertical"
             android:weightSum="100">
 
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
-
-                <ImageView
-                    android:id="@+id/atlantis_logo"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    app:srcCompat="@drawable/ic_atlantis_logo"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:fontFamily="sans-serif-black"
-                    android:text="LOST CITY OF ATLANTIS"
-                    android:textColor="#FFFFFF"
-                    android:textSize="25sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                android:fontFamily="sans-serif-black"
+                android:text="@string/atlantis_header"
+                android:textColor="#FFFFFF"
+                android:textAlignment="gravity"
+                android:layout_gravity="center_horizontal"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/ic_atlantis_logo"
+                app:drawableLeftCompat="@drawable/ic_atlantis_logo" />
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
@@ -60,71 +51,71 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="States"
-                            android:textColor="#FFFFFF"
-                            android:textSize="25sp"
-                            android:layout_gravity="center_horizontal"
-                            android:textAlignment="center"/>
+<!--                        <TextView-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:text="@string/states_header"-->
+<!--                            android:textColor="#FFFFFF"-->
+<!--                            android:textSize="25sp"-->
+<!--                            android:layout_gravity="center_horizontal"-->
+<!--                            android:textAlignment="center"/>-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/tritons_key"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textColor="#FFFFFF"-->
+<!--                            android:layout_marginTop="10dp"-->
+<!--                            android:layout_marginLeft="10dp"-->
+<!--                            android:layout_marginStart="10dp"-->
+<!--                            android:textSize="20sp"/>-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/room_door_1_2"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textColor="#FFFFFF"-->
+<!--                            android:layout_marginTop="10dp"-->
+<!--                            android:layout_marginLeft="10dp"-->
+<!--                            android:layout_marginStart="10dp"-->
+<!--                            android:textSize="20sp"/>-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/holy_molly"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textColor="#FFFFFF"-->
+<!--                            android:layout_marginTop="10dp"-->
+<!--                            android:layout_marginLeft="10dp"-->
+<!--                            android:layout_marginStart="10dp"-->
+<!--                            android:textSize="20sp"/>-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/poseidons_chest"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textColor="#FFFFFF"-->
+<!--                            android:layout_marginTop="10dp"-->
+<!--                            android:layout_marginLeft="10dp"-->
+<!--                            android:layout_marginStart="10dp"-->
+<!--                            android:textSize="20sp"/>-->
+
+<!--                        <TextView-->
+<!--                            android:id="@+id/hexagon_cabinets"-->
+<!--                            android:layout_width="wrap_content"-->
+<!--                            android:layout_height="wrap_content"-->
+<!--                            android:textColor="#FFFFFF"-->
+<!--                            android:layout_marginTop="10dp"-->
+<!--                            android:layout_marginLeft="10dp"-->
+<!--                            android:layout_marginStart="10dp"-->
+<!--                            android:textSize="20sp"/>-->
 
                         <TextView
-                            android:id="@+id/tritons_key"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:text="@string/actions_header"
                             android:textColor="#FFFFFF"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:textSize="20sp"/>
-
-                        <TextView
-                            android:id="@+id/room_door_1_2"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:textSize="20sp"/>
-
-                        <TextView
-                            android:id="@+id/holy_molly"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:textSize="20sp"/>
-
-                        <TextView
-                            android:id="@+id/poseidons_chest"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:textSize="20sp"/>
-
-                        <TextView
-                            android:id="@+id/hexagon_cabinets"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textColor="#FFFFFF"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginStart="10dp"
-                            android:textSize="20sp"/>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Actions"
-                            android:textColor="#FFFFFF"
-                            android:layout_marginTop="10dp"
+                            android:layout_marginTop="20dp"
                             android:textSize="25sp"
                             android:layout_gravity="center_horizontal"
                             android:textAlignment="center"/>
@@ -146,7 +137,8 @@
                                 android:layout_marginRight="5dp"
                                 android:layout_marginBottom="10dp"
                                 android:layout_weight="1"
-                                android:text="Waterfall" />
+                                style="?android:attr/button"
+                                android:text="@string/atlantis_waterfall" />
 
                             <Button
                                 android:id="@+id/poseidon_btn"
@@ -158,7 +150,8 @@
                                 android:layout_marginStart="5dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
-                                android:text="Poseidon"
+                                style="?android:attr/button"
+                                android:text="@string/atlantis_poseidon"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -179,7 +172,8 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginRight="5dp"
                                 android:layout_marginEnd="5dp"
-                                android:text="Triton's Key"
+                                style="?android:attr/button"
+                                android:text="@string/atlantis_tritons_key"
                                 android:layout_weight="1"/>
 
                             <Button
@@ -192,7 +186,8 @@
                                 android:layout_marginStart="5dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
-                                android:text="Hexagon Pattern"
+                                style="?android:attr/button"
+                                android:text="@string/atlantis_hexagon_pattern"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -213,7 +208,8 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginRight="5dp"
                                 android:layout_marginEnd="5dp"
-                                android:text="Column 1"
+                                style="?android:attr/button"
+                                android:text="@string/atlantis_column1"
                                 android:layout_weight="1"/>
 
                             <Button
@@ -226,7 +222,8 @@
                                 android:layout_marginStart="5dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
-                                android:text="Hexagon Cabinets"
+                                style="?android:attr/button"
+                                android:text="@string/atlantis_hexagon_cabinets"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -247,7 +244,8 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginRight="5dp"
                                 android:layout_marginEnd="5dp"
-                                android:text="Column 2"
+                                style="?android:attr/button"
+                                android:text="@string/atlantis_column2"
                                 android:layout_weight="1"/>
 
                             <Button
@@ -260,10 +258,13 @@
                                 android:layout_marginStart="5dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
-                                android:text="Trident Unlock"
+                                style="?android:attr/button"
+                                android:text="@string/atlantis_trident_unlock"
                                 android:layout_weight="1"/>
 
-                        </LinearLayout><LinearLayout
+                        </LinearLayout>
+
+                        <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
@@ -279,7 +280,8 @@
                             android:layout_marginStart="10dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginEnd="5dp"
-                            android:text="Column 3"
+                            style="?android:attr/button"
+                            android:text="@string/atlantis_column3"
                             android:layout_weight="1"/>
 
                         <Button
@@ -292,7 +294,8 @@
                             android:layout_marginStart="5dp"
                             android:layout_marginRight="10dp"
                             android:layout_marginEnd="10dp"
-                            android:text="Holy Molly"
+                            style="?android:attr/button"
+                            android:text="@string/atlantis_holy_molly"
                             android:layout_weight="1"/>
 
                     </LinearLayout>
@@ -313,7 +316,8 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginRight="5dp"
                                 android:layout_marginEnd="5dp"
-                                android:text="1st 2nd Room Door"
+                                style="?android:attr/button"
+                                android:text="@string/atlantis_room_door_1_2"
                                 android:layout_weight="1"/>
 
                             <Button
@@ -326,7 +330,8 @@
                                 android:layout_marginStart="5dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
-                                android:text="Exit"
+                                android:text="@string/exit"
+                                style="?android:attr/button"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -338,7 +343,7 @@
 
                             <Button
                                 android:id="@+id/reset_btn"
-                                android:layout_width="match_parent"
+                                android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:minHeight="70dp"
                                 android:layout_marginTop="10dp"
@@ -347,7 +352,7 @@
                                 android:layout_marginStart="10dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
-                                android:text="Reset"
+                                android:text="@string/reset"
                                 android:textColor="#AA0000"
                                 android:layout_weight="1"/>
 

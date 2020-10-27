@@ -1,16 +1,88 @@
 <resources>
     <string name="app_name">Escape Control</string>
+
+    <!--    Main Activity    -->
+    <string name="main_atlantis">Main Atlantis</string>
+    <string name="main_atlantis_header">LOST CITY\nOF ATLANTIS</string>
+    <string name="main_mansion">Main Mansion</string>
+    <string name="main_mansion_header">HAUNTED MANSION</string>
+    <string name="main_mission">Main Mansion</string>
+    <string name="main_mission_header">LA MISIÓN DEL PROFESOR</string>
+    <string name="main_philosophers">Main Philosopher\'s Stone</string>
+    <string name="main_philosophers_header">PHILOSOPHER\'S STONE</string>
+
     <!--    about_custom_dialog.xml    -->
     <string name="logo">Game Over logo</string>
-    <string name="about_version">Remote Control App\nVersion 0.1</string>
+    <string name="about_version">Remote Control App\nVersion 1</string>
     <string name="about_created_by">Created by\nStratos Mylonas</string>
     <string name="title_activity_atlantis">Atlantis</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!--    General     -->
+    <string name="states_header">States</string>
+    <string name="actions_header">Actions</string>
+    <string name="exit">Exit</string>
+    <string name="reset">Reset</string>
+
+    <!--    Atlantis    -->
+    <string name="atlantis_background">Atlantis Background</string>
+    <string name="atlantis_logo">Atlantis Logo</string>
+    <string name="atlantis_header">LOST CITY OF ATLANTIS</string>
+    <string name="atlantis_waterfall">Waterfall</string>
+    <string name="atlantis_poseidon">Poseidon</string>
+    <string name="atlantis_tritons_key">Triton\'s Key</string>
+    <string name="atlantis_hexagon_pattern">Hexagon Pattern</string>
+    <string name="atlantis_hexagon_cabinets">Hexagon Cabinets</string>
+    <string name="atlantis_column1">Column 1</string>
+    <string name="atlantis_column2">Column 2</string>
+    <string name="atlantis_column3">Column 3</string>
+    <string name="atlantis_trident_unlock">Trident Unlock</string>
+    <string name="atlantis_holy_molly">Holy Molly</string>
+    <string name="atlantis_room_door_1_2">1st-2nd Room Door</string>
+
+    <!--    Mansion    -->
+    <string name="mansion_background">Mansion Background</string>
+    <string name="mansion_logo">Mansion Logo</string>
+    <string name="mansion_header">HAUNTED MANSION</string>
+    <string name="mansion_tarrot_combination_1">1st Tarrot\nCombination</string>
+    <string name="mansion_tarrot_combination_2">2nd Tarrot\nCombination</string>
+    <string name="mansion_tarrot_combination_3">3rd Tarrot\nCombination</string>
+    <string name="mansion_radio_on">Radio On</string>
+    <string name="mansion_doll">Doll</string>
+    <string name="mansion_shelf1">Shelf 1</string>
+    <string name="mansion_shelf2">Shelf 2</string>
+    <string name="mansion_window_doors">Window Doors</string>
+
+    <!--    La Mission del Professor    -->
+    <string name="mission_background">Mission Background</string>
+    <string name="mission_logo">Mission Logo</string>
+    <string name="mission_header">LA MISIÓN DEL PROFESOR</string>
+    <string name="mission_lasers">Lasers</string>
+    <string name="mission_mobile_phone">Mobile Phone</string>
+    <string name="mission_office_door">Office Door</string>
+    <string name="mission_desk_cabinet">Desk Cabinet</string>
+    <string name="mission_bookcase_cabinet">Bookcase Cabinet</string>
+    <string name="mission_bansky_painting">Bansky Painting</string>
+    <string name="mission_frame_rfid">Frame (RFID Card)</string>
+    <string name="mission_control_room_door">Control Room Door</string>
+    <string name="mission_vault_door">Vault Door</string>
+    <string name="mission_ventilation">Ventilation</string>
+    <string name="mission_money_drop">Money Drop</string>
+    <string name="mission_panel_numbers">Panel Numbers</string>
+    <string name="mission_console_large_buttons">Console Large Buttons</string>
+    <string name="mission_console_metal_buttons">Console Metal Buttons</string>
+    <string name="mission_passage">Passage</string>
+
+    <!--    Philosopher's Stone    -->
+    <string name="philosophers_background">Philosopher\'s Stone</string>
+    <string name="philosophers_logo">Philosopher\'s Logo</string>
+    <string name="philosophers_header">Philosopher\'s Stone</string>
+    <string name="philosophers_lasers">4 Coins Prop</string>
+    <string name="philosophers_harp">Harp</string>
+    <string name="philosophers_passage">Passage (Dog\'s Base)</string>
+    <string name="philosophers_knight_video">Knight Video</string>
+    <string name="philosophers_holding_keys_door">Holding Keys Door</string>
+    <string name="philosophers_books_open">Books Open</string>
+    <string name="philosophers_books_close">Books Close</string>
+    <string name="philosophers_mirror">Mirror</string>
+
 </resources>

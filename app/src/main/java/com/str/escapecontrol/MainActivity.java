@@ -39,35 +39,24 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-    }
 
-    private boolean checkWifi(Activity context){
-        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
-        if (!wifiManager.isWifiEnabled()){
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("You need a WiFi connection to use this application. Please turn on WiFi")
-                    .setTitle("Unable to connect")
-                    .setCancelable(false)
-                    .setPositiveButton("Settings",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                                    startActivity(intent);
-                                }
-                            })
-                    .setNegativeButton("Cancel",
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    MainActivity.this.finish();
-                                }
-                            });
-            AlertDialog alertDialog = builder.create();
-            alertDialog.show();
-            return false;
-        }
-        return true;
+        FrameLayout MissionFrameLayout = findViewById(R.id.mission_button);
+        MissionFrameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Mission.class);
+                startActivity(intent);
+            }
+        });
+
+        FrameLayout PhilosopherFrameLayout = findViewById(R.id.philosophers_button);
+        PhilosopherFrameLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Philosopher.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

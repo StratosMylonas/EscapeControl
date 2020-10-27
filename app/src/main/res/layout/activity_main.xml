@@ -16,13 +16,14 @@
             android:id="@+id/atlantis_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="50">
+            android:layout_weight="25">
 
             <ImageView
                 android:id="@+id/atlantis_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
+                android:contentDescription="@string/main_atlantis"
                 app:srcCompat="@drawable/atlantis" />
 
             <LinearLayout
@@ -33,9 +34,10 @@
 
                 <ImageView
                     android:id="@+id/atlantis_logo"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:srcCompat="@drawable/ic_atlantis_logo"/>
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:contentDescription="@string/atlantis_logo"
+                    app:srcCompat="@drawable/ic_atlantis_logo" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -44,7 +46,7 @@
                     android:fontFamily="sans-serif-black"
                     android:text="LOST CITY\nOF ATLANTIS"
                     android:textColor="#FFFFFF"
-                    android:textSize="36sp"
+                    android:textSize="32sp"
                     android:textStyle="bold" />
             </LinearLayout>
 
@@ -54,13 +56,14 @@
             android:id="@+id/mansion_button"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="50">
+            android:layout_weight="25">
 
             <ImageView
                 android:id="@+id/imageView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:scaleType="centerCrop"
+                android:contentDescription="@string/main_mansion"
                 app:srcCompat="@drawable/mansion" />
 
             <LinearLayout
@@ -71,9 +74,10 @@
 
                 <ImageView
                     android:id="@+id/mansion_logo"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    app:srcCompat="@drawable/ic_mansion_logo"/>
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:contentDescription="@string/mansion_logo"
+                    app:srcCompat="@drawable/ic_mansion_logo" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -82,7 +86,85 @@
                     android:fontFamily="sans-serif-black"
                     android:text="HAUNTED\nMANSION"
                     android:textColor="#FFFFFF"
-                    android:textSize="36sp"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/mission_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="25">
+
+            <ImageView
+                android:id="@+id/mission_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/main_mansion"
+                app:srcCompat="@drawable/mission" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/mission_logo"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:contentDescription="@string/mansion_logo"
+                    app:srcCompat="@drawable/ic_mission_logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="sans-serif-black"
+                    android:text="LA MISIÓN\nDEL PROFESOR"
+                    android:textColor="#FFFFFF"
+                    android:textSize="32sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/philosophers_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="25">
+
+            <ImageView
+                android:id="@+id/philosophers_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/main_mansion"
+                app:srcCompat="@drawable/philosophers" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center">
+
+                <ImageView
+                    android:id="@+id/philosophers_logo"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:contentDescription="@string/mansion_logo"
+                    app:srcCompat="@drawable/ic_philosophers_logo" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:fontFamily="sans-serif-black"
+                    android:text="PHILOSOPHER'S\nSTONE"
+                    android:textColor="#FFFFFF"
+                    android:textSize="32sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </FrameLayout>

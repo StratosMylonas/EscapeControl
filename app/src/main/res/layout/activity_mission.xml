@@ -14,8 +14,8 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:src="@drawable/mansion"
-            android:contentDescription="@string/mansion_background"
+            android:src="@drawable/mission"
+            android:contentDescription="@string/mission_background"
             android:scaleType="centerCrop"/>
 
         <LinearLayout
@@ -28,14 +28,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-black"
-                android:text="@string/mansion_header"
+                android:text="@string/mission_header"
                 android:textColor="#FFFFFF"
                 android:textAlignment="gravity"
                 android:layout_gravity="center_horizontal"
                 android:textSize="25sp"
                 android:textStyle="bold"
-                app:drawableStartCompat="@drawable/ic_mansion_logo"
-                app:drawableLeftCompat="@drawable/ic_mansion_logo" />
+                app:drawableStartCompat="@drawable/ic_mission_logo"
+                app:drawableLeftCompat="@drawable/ic_mission_logo" />
 
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
@@ -50,75 +50,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="@string/states_header"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:textSize="25sp"-->
-<!--                            android:layout_gravity="center_horizontal"-->
-<!--                            android:textAlignment="center"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/mirror_drawer"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/mirror_cabinet"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/living_room_door"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/kids_room_door"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/passage"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/window_doors"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -136,7 +67,7 @@
                             android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/tarrot_combination_1_btn"
+                                android:id="@+id/mission_lasers_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:minHeight="70dp"
@@ -148,10 +79,10 @@
                                 android:layout_marginBottom="10dp"
                                 android:layout_weight="1"
                                 style="?android:attr/button"
-                                android:text="@string/mansion_tarrot_combination_1" />
+                                android:text="@string/mission_lasers" />
 
                             <Button
-                                android:id="@+id/radio_on_btn"
+                                android:id="@+id/mission_mobile_phone_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="20dp"
@@ -161,7 +92,7 @@
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
                                 style="?android:attr/button"
-                                android:text="@string/mansion_radio_on"
+                                android:text="@string/mission_mobile_phone"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -172,7 +103,7 @@
                             android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/tarrot_combination_2_btn"
+                                android:id="@+id/mission_office_door_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:minHeight="70dp"
@@ -183,11 +114,11 @@
                                 android:layout_marginRight="5dp"
                                 android:layout_marginEnd="5dp"
                                 style="?android:attr/button"
-                                android:text="@string/mansion_tarrot_combination_2"
+                                android:text="@string/mission_office_door"
                                 android:layout_weight="1"/>
 
                             <Button
-                                android:id="@+id/doll_btn"
+                                android:id="@+id/mission_desk_cabinet_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="10dp"
@@ -197,7 +128,7 @@
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
                                 style="?android:attr/button"
-                                android:text="@string/mansion_doll"
+                                android:text="@string/mission_desk_cabinet"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -208,7 +139,7 @@
                             android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/tarrot_combination_3_btn"
+                                android:id="@+id/mission_bookcase_cabinet_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:minHeight="70dp"
@@ -219,11 +150,11 @@
                                 android:layout_marginRight="5dp"
                                 android:layout_marginEnd="5dp"
                                 style="?android:attr/button"
-                                android:text="@string/mansion_tarrot_combination_3"
+                                android:text="@string/mission_bookcase_cabinet"
                                 android:layout_weight="1"/>
 
                             <Button
-                                android:id="@+id/shelf_1_btn"
+                                android:id="@+id/mission_bansky_painting_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="10dp"
@@ -233,7 +164,7 @@
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
                                 style="?android:attr/button"
-                                android:text="@string/mansion_shelf1"
+                                android:text="@string/mission_bansky_painting"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -244,7 +175,7 @@
                             android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/window_doors_btn"
+                                android:id="@+id/mission_frame_rfid_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:minHeight="70dp"
@@ -255,11 +186,11 @@
                                 android:layout_marginRight="5dp"
                                 android:layout_marginEnd="5dp"
                                 style="?android:attr/button"
-                                android:text="@string/mansion_window_doors"
+                                android:text="@string/mission_frame_rfid"
                                 android:layout_weight="1"/>
 
                             <Button
-                                android:id="@+id/shelf_2_btn"
+                                android:id="@+id/mission_control_room_door_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="10dp"
@@ -269,7 +200,115 @@
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
                                 style="?android:attr/button"
-                                android:text="@string/mansion_shelf2"
+                                android:text="@string/mission_control_room_door"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/mission_vault_door_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:minHeight="70dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginEnd="5dp"
+                                style="?android:attr/button"
+                                android:text="@string/mission_vault_door"
+                                android:layout_weight="1"/>
+
+                            <Button
+                                android:id="@+id/mission_ventilation_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginEnd="10dp"
+                                style="?android:attr/button"
+                                android:text="@string/mission_ventilation"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/mission_money_drop_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:minHeight="70dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginEnd="5dp"
+                                style="?android:attr/button"
+                                android:text="@string/mission_money_drop"
+                                android:layout_weight="1"/>
+
+                            <Button
+                                android:id="@+id/mission_panel_numbers_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginEnd="10dp"
+                                style="?android:attr/button"
+                                android:text="@string/mission_panel_numbers"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/mission_console_large_buttons_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:minHeight="70dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginEnd="5dp"
+                                style="?android:attr/button"
+                                android:text="@string/mission_console_large_buttons"
+                                android:layout_weight="1"/>
+
+                            <Button
+                                android:id="@+id/mission_console_metal_buttons_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginEnd="10dp"
+                                style="?android:attr/button"
+                                android:text="@string/mission_console_metal_buttons"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -295,13 +334,35 @@
                                 android:layout_weight="1"/>
 
                             <Button
-                                android:id="@+id/reset_btn"
+                                android:id="@+id/passage_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="10dp"
                                 android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginStart="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginEnd="10dp"
+                                style="?android:attr/button"
+                                android:text="@string/mission_passage"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/reset_btn"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:minHeight="70dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="10dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
                                 style="?android:attr/button"
