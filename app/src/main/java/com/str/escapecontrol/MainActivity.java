@@ -1,18 +1,13 @@
 package com.str.escapecontrol;
 
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
