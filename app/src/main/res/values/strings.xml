@@ -75,8 +75,8 @@
     <!--    Philosopher's Stone    -->
     <string name="philosophers_background">Philosopher\'s Stone</string>
     <string name="philosophers_logo">Philosopher\'s Logo</string>
-    <string name="philosophers_header">Philosopher\'s Stone</string>
-    <string name="philosophers_lasers">4 Coins Prop</string>
+    <string name="philosophers_header">PHILOSOPHER\'S STONE</string>
+    <string name="philosophers_coins_prop">4 Coins Prop</string>
     <string name="philosophers_harp">Harp</string>
     <string name="philosophers_passage">Passage (Dog\'s Base)</string>
     <string name="philosophers_knight_video">Knight Video</string>

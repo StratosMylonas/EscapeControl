@@ -5,5 +5,251 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Philosopher">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/philosophers"
+            android:contentDescription="@string/philosophers_background"
+            android:scaleType="centerCrop"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="100">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:text="PHILOSOPHER'S STONE"
+                android:textColor="#FFFFFF"
+                android:textAlignment="gravity"
+                android:layout_gravity="center_horizontal"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:drawableStartCompat="@drawable/ic_philosophers_logo"
+                app:drawableLeftCompat="@drawable/ic_philosophers_logo" />
+
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/swipeRefreshLayout">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/actions_header"
+                            android:textColor="#FFFFFF"
+                            android:layout_marginTop="20dp"
+                            android:textSize="25sp"
+                            android:layout_gravity="center_horizontal"
+                            android:textAlignment="center"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/philosophers_coins_prop_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:minHeight="70dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginEnd="5dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_weight="1"
+                                style="?android:attr/button"
+                                android:text="@string/philosophers_coins_prop" />
+
+                            <Button
+                                android:id="@+id/philosophers_harp_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="20dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginEnd="10dp"
+                                style="?android:attr/button"
+                                android:text="@string/philosophers_harp"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/philosophers_passage_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:minHeight="70dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginEnd="5dp"
+                                style="?android:attr/button"
+                                android:text="@string/philosophers_passage"
+                                android:layout_weight="1"/>
+
+                            <Button
+                                android:id="@+id/philosophers_knight_video_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginEnd="10dp"
+                                style="?android:attr/button"
+                                android:text="@string/philosophers_knight_video"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/philosophers_holding_keys_door_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:minHeight="70dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginEnd="5dp"
+                                style="?android:attr/button"
+                                android:text="@string/philosophers_holding_keys_door"
+                                android:layout_weight="1"/>
+
+                            <Button
+                                android:id="@+id/philosophers_books_open_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginEnd="10dp"
+                                style="?android:attr/button"
+                                android:text="@string/philosophers_books_open"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/philosophers_mirror_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginEnd="5dp"
+                                style="?android:attr/button"
+                                android:text="@string/philosophers_mirror"
+                                android:layout_weight="1"/>
+
+                            <Button
+                                android:id="@+id/philosophers_books_close_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:minHeight="70dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginEnd="10dp"
+                                style="?android:attr/button"
+                                android:text="@string/philosophers_books_close"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/exit_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:minHeight="70dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginEnd="5dp"
+                                style="?android:attr/button"
+                                android:text="@string/exit"
+                                android:layout_weight="1"/>
+
+                            <Button
+                                android:id="@+id/reset_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:minHeight="70dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginBottom="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginEnd="10dp"
+                                style="?android:attr/button"
+                                android:text="@string/reset"
+                                android:textColor="#AA0000"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </ScrollView>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

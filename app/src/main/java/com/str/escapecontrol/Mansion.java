@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
@@ -19,9 +18,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.HttpHostConnectException;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.BasicHttpParams;
 import org.json.JSONArray;
@@ -311,7 +313,6 @@ public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnR
                 });
                 builder.setCancelable(false);
                 builder.show();
-
             }
 
             return networkInfo.isConnected();
@@ -331,8 +332,7 @@ public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnR
         }
 
         @Override
-        protected MansionRoomStatus doInBackground(String... params){
-
+        protected MansionRoomStatus doInBackground(String... params) {
             byte[] address = {(byte) 192, (byte) 168, (byte) 1, (byte) 199};
             try {
                 InetAddress addr = InetAddress.getByAddress(address);
@@ -346,19 +346,41 @@ public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnR
             }
 
             HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
-            HttpPost httpPost = new HttpPost("http://192.168.1.199/EscapeControl/dbconnector_mansion.php");
+            HttpPost httpPost = new HttpPost("http://192.168.1.199/EscapeControl/dbconnector.php?table_name=haunted_mansion");
             String jsonResult = "";
             try {
                 HttpResponse response = httpClient.execute(httpPost);
-                jsonResult = inputStreamToString(response.getEntity().getContent()).toString();
-                System.out.println("Returned Json object " + jsonResult);
+                StatusLine statusLine = response.getStatusLine();
+                if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                    jsonResult = inputStreamToString(response.getEntity().getContent()).toString();
+                    System.out.println("Returned Json object " + jsonResult);
+                }
+
             } catch (ClientProtocolException e) {
+                e.printStackTrace();
+            } catch (HttpHostConnectException e){
                 e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             if (jsonResult.equals("")) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast toast = Toast.makeText(getApplicationContext(), "Connection to server failed", Toast.LENGTH_SHORT);
+                        toast.show();
+                        if (jsonAsync != null){
+                            jsonAsync.cancel(true);
+                        }
+                        if (timer != null) {
+                            timer.cancel();
+                        }
+                        if (dialog.isShowing()){
+                            dialog.dismiss();
+                        }
+                    }
+                });
                 return null;
             }
 
@@ -491,6 +513,10 @@ public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnR
             };
 
             timer.schedule(task, 0, 1000);
+        }
+        else {
+            Toast toast = Toast.makeText(getApplicationContext(), "Connection with Server failed", Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 
