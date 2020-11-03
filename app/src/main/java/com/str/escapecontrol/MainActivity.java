@@ -2,13 +2,21 @@ package com.str.escapecontrol;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.SimpleAdapter;
+import android.widget.SimpleCursorAdapter;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -52,6 +60,27 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        FloatingActionButton floatingActionButton = findViewById(R.id.settings_gear);
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, Settings.class);
+                startActivity(intent);
+            }
+        });
+
+        SQLiteDatabase database = openOrCreateDatabase("escape_control", MODE_PRIVATE, null);
+        database.execSQL("CREATE TABLE IF NOT EXISTS IPAddress(id INT, ip VARCHAR(20));");
+        //database.execSQL("INSERT INTO IPAddress VALUES ('192.168.11.100');");
+        Cursor cursor = database.rawQuery("SELECT ip FROM IPAddress", null);
+        if (cursor.getCount() == 0){
+            database.execSQL("INSERT INTO IPAddress VALUES (1, '192.168.11.100');");
+            cursor = database.rawQuery("SELECT ip FROM IPAddress WHERE id = 1", null);
+        }
+        cursor.moveToFirst();
+        cursor.close();
+        database.close();
     }
 
     @Override

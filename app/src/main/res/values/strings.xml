@@ -10,6 +10,7 @@
     <string name="main_mission_header">LA MISIÓN DEL PROFESOR</string>
     <string name="main_philosophers">Main Philosopher\'s Stone</string>
     <string name="main_philosophers_header">PHILOSOPHER\'S STONE</string>
+    <string name="main_settings_gear">Settings</string>
 
     <!--    about_custom_dialog.xml    -->
     <string name="logo">Game Over logo</string>

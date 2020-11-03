@@ -13,12 +13,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Settings"></activity>
         <activity
             android:name=".Philosopher"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
+            android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity
             android:name=".Mission"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
+            android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity
             android:name=".Atlantis"
             android:configChanges="orientation|screenSize|keyboardHidden"

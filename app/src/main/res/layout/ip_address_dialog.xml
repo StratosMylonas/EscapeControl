@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryDark"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+        <TextView
+            android:id="@+id/textviewip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Enter Server IP Address"
+            android:textSize="20sp"
+            android:textColor="@color/colorAccent"/>
+
+        <EditText
+            android:id="@+id/editText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textviewip"
+            android:layout_alignStart="@+id/textviewip"
+            android:layout_below="@id/textviewip"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorAccent"
+            android:textColorHint="#999999"
+            android:hint="default 192.168.11.100"
+            android:layout_gravity="center_horizontal"
+            />
+
+    </RelativeLayout>

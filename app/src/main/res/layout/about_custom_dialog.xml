@@ -3,12 +3,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#00FFFFFF">
 
     <LinearLayout
         android:id="@+id/customView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#65000000"
         android:gravity="center"
         android:orientation="vertical"
         android:weightSum="1">
@@ -42,8 +44,8 @@
                 android:layout_marginTop="50dp"
                 android:text="@string/about_version"
                 android:textAlignment="center"
-                android:textSize="18sp"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -60,8 +62,8 @@
                 android:layout_marginTop="50dp"
                 android:text="@string/about_created_by"
                 android:textAlignment="center"
-                android:textSize="16sp"
-                android:textColor="#FFFFFF" />
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
         </LinearLayout>
 
     </LinearLayout>

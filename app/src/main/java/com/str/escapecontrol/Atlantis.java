@@ -7,6 +7,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -45,6 +47,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
 
     private Timer timer;
     private Atlantis.AsyncDataClass jsonAsync;
+    String ipAddress;
 
     Button waterfall_btn, tritons_key_btn, column1_btn, column2_btn,
            column3_btn, room_door_1_2_btn, holy_molly_btn, poseidon_btn,
@@ -58,16 +61,27 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             trident_unlock_btn_str = "0", exit_btn_str = "0", reset_btn_str = "0";
     SwipeRefreshLayout swipeRefreshLayout;
     ProgressDialog dialog;
-    boolean firstTimeLoading;
+    boolean firstTimeLoading, cancelActivity = false;
+    Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atlantis);
+        getIpAddress();
         findIds();
         setRepeatingAsyncTask();
         dialog = new ProgressDialog(Atlantis.this);
         onClickListeners();
+    }
+
+    void getIpAddress(){
+        final SQLiteDatabase database = openOrCreateDatabase("escape_control", MODE_PRIVATE, null);
+        Cursor cursor = database.rawQuery("SELECT ip FROM IPAddress WHERE id = 1", null);
+        cursor.moveToFirst();
+        ipAddress = cursor.getString(0);
+        cursor.close();
+        database.close();
     }
 
     void findIds(){
@@ -102,8 +116,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (waterfall_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 }
                 else {
                     waterfall_btn_str = "1";
@@ -117,8 +130,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (tritons_key_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 }
                 else {
                     tritons_key_btn_str = "1";
@@ -132,8 +144,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (column1_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 }
                 else {
                     column1_btn_str = "1";
@@ -147,8 +158,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (column2_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 }
                 else {
                     column2_btn_str = "1";
@@ -162,8 +172,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (column3_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 }
                 else {
                     column3_btn_str = "1";
@@ -177,8 +186,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (room_door_1_2_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 }
                 else {
                     room_door_1_2_btn_str = "1";
@@ -192,8 +200,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (holy_molly_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 }
                 else {
                     holy_molly_btn_str = "1";
@@ -207,8 +214,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (poseidon_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 }
                 else {
                     poseidon_btn_str = "1";
@@ -222,8 +228,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (hexagon_pattern_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 }
                 else {
                     hexagon_pattern_btn_str = "1";
@@ -237,8 +242,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (hexagon_cabinets_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 }
                 else {
                     hexagon_cabinets_btn_str = "1";
@@ -252,8 +256,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (trident_unlock_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 }
                 else {
                     trident_unlock_btn_str = "1";
@@ -267,8 +270,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (exit_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 }
                 else {
                     exit_btn_str = "1";
@@ -282,8 +284,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (reset_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
+                    showAToast("Already pressed");
                 } else {
                     AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Atlantis.this);
                     alertDialogBuilder.setMessage("Do you want to reset?");
@@ -325,6 +326,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
         }
         setRepeatingAsyncTask();
         swipeRefreshLayout.setRefreshing(false);
+        cancelActivity = true;
     }
 
     @Override
@@ -379,10 +381,16 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
 
         @Override
         protected AtlantisRoomStatus doInBackground(String... params) {
-            byte[] address = {(byte) 192, (byte) 168, (byte) 1, (byte) 199};
             try {
-                InetAddress addr = InetAddress.getByAddress(address);
+                InetAddress addr = InetAddress.getByName(ipAddress);
                 if (!addr.isReachable(2000)) {
+                    cancelActivity = true;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showAToast("Connection to server failed");
+                        }
+                    });
                     return null;
                 }
             } catch (UnknownHostException e) {
@@ -392,7 +400,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             }
 
             HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
-            HttpPost httpPost = new HttpPost("http://192.168.1.199/EscapeControl/dbconnector.php?table_name=atlantis");
+            HttpPost httpPost = new HttpPost("http://" + ipAddress + "/EscapeControl/dbconnector.php?table_name=atlantis");
             String jsonResult = "";
             try {
                 HttpResponse response = httpClient.execute(httpPost);
@@ -414,8 +422,6 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Connection to server failed", Toast.LENGTH_SHORT);
-                        toast.show();
                         if (jsonAsync != null){
                             jsonAsync.cancel(true);
                         }
@@ -446,6 +452,15 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             super.onPostExecute(roomObject);
 
             if (roomObject == null) {
+                if (jsonAsync != null){
+                    jsonAsync.cancel(true);
+                }
+                if (timer != null) {
+                    timer.cancel();
+                }
+                if (dialog.isShowing()){
+                    dialog.dismiss();
+                }
                 return;
             }
 
@@ -551,8 +566,13 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                         @Override
                         public void run() {
                             try {
-                                jsonAsync = new Atlantis.AsyncDataClass();
-                                jsonAsync.execute("");
+                                if (!cancelActivity) {
+                                    jsonAsync = new Atlantis.AsyncDataClass();
+                                    jsonAsync.execute("");
+                                }
+                                else{
+                                    timer.cancel();
+                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -564,8 +584,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             timer.schedule(task, 0, 1000);
         }
         else {
-            Toast toast = Toast.makeText(getApplicationContext(), "Connection with Server failed", Toast.LENGTH_SHORT);
-            toast.show();
+            showAToast("Connection to server failed");
         }
     }
 
@@ -573,7 +592,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
 
         protected Integer doInBackground(String... params){
             HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
-            String urlStr = "http://192.168.1.199/EscapeControl/updateAtlantis.php?id=" + 1 +
+            String urlStr = "http://" + ipAddress + "/EscapeControl/updateAtlantis.php?id=" + 1 +
                             "&tritons_key=" + tritons_key_str +
                             "&room_door_1_2=" + room_door_1_2_str +
                             "&holy_molly=" + holy_molly_str +
@@ -606,5 +625,13 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
 
             return 0;
         }
+    }
+
+    public void showAToast (String message){
+        if (toast != null) {
+            toast.cancel();
+        }
+        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+        toast.show();
     }
 }

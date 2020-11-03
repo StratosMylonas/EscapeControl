@@ -50,6 +50,17 @@
                     android:textStyle="bold" />
             </LinearLayout>
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/settings_gear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_gravity="end"
+                android:contentDescription="@string/main_settings_gear"
+                app:backgroundTint="#00FFFFFF"
+                app:srcCompat="@drawable/gear" />
+
         </FrameLayout>
 
         <FrameLayout
