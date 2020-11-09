@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Mansion"
+    tools:context=".Atlantis"
     android:background="@color/colorPrimaryDark">
 
     <FrameLayout
@@ -37,6 +37,32 @@
                 app:drawableStartCompat="@drawable/ic_mansion_logo"
                 app:drawableLeftCompat="@drawable/ic_mansion_logo" />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginEnd="10dp">
+
+                <TextView
+                    android:id="@+id/serverStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:textColor="#FFFFFF"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="20sp"/>
+
+                <ImageView
+                    android:id="@+id/statusImg"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/offline"
+                    android:layout_gravity="center_vertical" />
+            </LinearLayout>
+
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -51,82 +77,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="@string/states_header"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:textSize="25sp"-->
-<!--                            android:layout_gravity="center_horizontal"-->
-<!--                            android:textAlignment="center"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/mirror_drawer"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/mirror_cabinet"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/living_room_door"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/kids_room_door"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/passage"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/window_doors"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/actions_header"
                             android:textColor="#FFFFFF"
-                            android:layout_marginTop="20dp"
                             android:textSize="25sp"
+                            android:layout_marginBottom="10dp"
                             android:layout_gravity="center_horizontal"
                             android:textAlignment="center"/>
 
@@ -142,10 +99,9 @@
                                 android:minHeight="70dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginLeft="10dp"
-                                android:layout_marginTop="20dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_marginEnd="5dp"
                                 android:layout_marginRight="5dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_weight="1"
                                 style="?android:attr/button"
                                 android:text="@string/mansion_tarrot_combination_1" />
@@ -154,8 +110,7 @@
                                 android:id="@+id/radio_on_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginTop="20dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginRight="10dp"
@@ -169,15 +124,43 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:id="@+id/tarrot_combination_1_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:id="@+id/radio_on_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
                             android:orientation="horizontal">
 
                             <Button
                                 android:id="@+id/tarrot_combination_2_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:minHeight="70dp"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginRight="5dp"
@@ -188,16 +171,47 @@
 
                             <Button
                                 android:id="@+id/doll_btn"
+                                style="?android:attr/button"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginLeft="5dp"
                                 android:layout_marginStart="5dp"
-                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_marginEnd="10dp"
-                                style="?android:attr/button"
-                                android:text="@string/mansion_doll"
+                                android:layout_marginRight="10dp"
+                                android:layout_weight="1"
+                                android:minHeight="70dp"
+                                android:text="@string/mansion_doll" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:id="@+id/tarrot_combination_2_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:id="@+id/doll_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -213,7 +227,6 @@
                                 android:layout_height="match_parent"
                                 android:minHeight="70dp"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginRight="5dp"
@@ -227,13 +240,42 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
                                 style="?android:attr/button"
                                 android:text="@string/mansion_shelf1"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:id="@+id/tarrot_combination_3_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:id="@+id/shelf_1_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -249,7 +291,6 @@
                                 android:layout_height="match_parent"
                                 android:minHeight="70dp"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginRight="5dp"
@@ -263,13 +304,42 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
                                 style="?android:attr/button"
                                 android:text="@string/mansion_shelf2"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:id="@+id/window_doors_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:id="@+id/shelf_2_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -285,7 +355,6 @@
                                 android:layout_height="match_parent"
                                 android:minHeight="70dp"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginRight="5dp"
@@ -299,18 +368,42 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
                                 style="?android:attr/button"
-                                android:text="@string/reset"
                                 android:textColor="#AA0000"
+                                android:text="@string/reset"
+                                android:layout_weight="1"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:id="@+id/exit_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textColor="@color/colorAccent"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
-
                     </LinearLayout>
 
                 </ScrollView>

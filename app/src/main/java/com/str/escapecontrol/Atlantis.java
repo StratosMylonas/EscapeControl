@@ -1,9 +1,9 @@
 package com.str.escapecontrol;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,7 +17,13 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -49,30 +55,77 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
     private Atlantis.AsyncDataClass jsonAsync;
     String ipAddress;
 
-    Button waterfall_btn, tritons_key_btn, column1_btn, column2_btn,
+    Button waterfall_btn, tritons_key_btn, column2_btn,
            column3_btn, room_door_1_2_btn, holy_molly_btn, poseidon_btn,
            hexagon_pattern_btn, hexagon_cabinets_btn, trident_unlock_btn,
            exit_btn, reset_btn;
+
     String  tritons_key_str = "0", room_door_1_2_str = "0", holy_molly_str = "0",
             poseidons_chest_str = "0", hexagon_cabinets_str = "0", waterfall_btn_str = "0",
-            tritons_key_btn_str = "0", column1_btn_str = "0", column2_btn_str = "0",
+            tritons_key_btn_str = "0", column2_btn_str = "0",
             column3_btn_str = "0", room_door_1_2_btn_str = "0", holy_molly_btn_str = "0",
             poseidon_btn_str = "0", hexagon_pattern_btn_str = "0", hexagon_cabinets_btn_str = "0",
             trident_unlock_btn_str = "0", exit_btn_str = "0", reset_btn_str = "0";
+
+    TextView waterfall_txt, tritons_key_txt, column2_txt, column3_txt, room_door_1_2_txt,
+             holy_molly_txt, poseidon_txt, hexagon_pattern_txt, hexagon_cabinets_txt, trident_unlock_txt,
+             exit_txt;
+
+    String  waterfall_txt_str = "Off", tritons_key_txt_str = "Off",
+            column2_txt_str = "Off", column3_txt_str = "Off", room_door_1_2_txt_str = "Off",
+            holy_molly_txt_str = "Off", poseidon_txt_str = "Off", hexagon_pattern_txt_str = "Off",
+            hexagon_cabinets_txt_str = "Off", trident_unlock_txt_str = "Off", exit_txt_str = "Off";
+
+    TextView statusTxt;
+    ImageView statusImg;
     SwipeRefreshLayout swipeRefreshLayout;
     ProgressDialog dialog;
-    boolean firstTimeLoading, cancelActivity = false;
+    boolean firstTimeLoading, endToast = false;
     Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atlantis);
+
         getIpAddress();
         findIds();
+        animateStatusImage();
         setRepeatingAsyncTask();
         dialog = new ProgressDialog(Atlantis.this);
         onClickListeners();
+        updateTxts();
+    }
+
+    void animateStatusImage(){
+        statusTxt.setText("Status: Offline");
+        statusImg = findViewById(R.id.statusImg);
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(statusImg, "alpha", 1f, .3f);
+        fadeOut.setDuration(1000);
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(statusImg, "alpha", .3f, 1f);
+        fadeIn.setDuration(1000);
+
+        final AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(fadeIn).after(fadeOut);
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                animatorSet.start();
+            }
+        });
+        animatorSet.start();
+    }
+
+    void setStatus(boolean state){
+        if (state){
+            statusTxt.setText("Status: Online");
+            statusImg.setImageResource(R.drawable.online);
+        }
+        else{
+            statusTxt.setText("Status: Offline");
+            statusImg.setImageResource(R.drawable.offline);
+        }
     }
 
     void getIpAddress(){
@@ -86,16 +139,22 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
 
     void findIds(){
         //TextViews
-//        tritons_key = findViewById(R.id.tritons_key);
-//        room_door_1_2 = findViewById(R.id.room_door_1_2);
-//        holy_molly = findViewById(R.id.holy_molly);
-//        poseidons_chest = findViewById(R.id.poseidons_chest);
-//        hexagon_cabinets = findViewById(R.id.hexagon_cabinets);
+        statusTxt = findViewById(R.id.serverStatus);
+        waterfall_txt = findViewById(R.id.waterfall_txt);
+        tritons_key_txt = findViewById(R.id.tritons_key_txt);
+        column2_txt = findViewById(R.id.column2_txt);
+        column3_txt = findViewById(R.id.column3_txt);
+        room_door_1_2_txt = findViewById(R.id.room_door_1_2_txt);
+        holy_molly_txt = findViewById(R.id.holy_molly_txt);
+        poseidon_txt = findViewById(R.id.poseidon_txt);
+        hexagon_pattern_txt = findViewById(R.id.hexagon_pattern_txt);
+        hexagon_cabinets_txt = findViewById(R.id.hexagon_cabinets_txt);
+        trident_unlock_txt = findViewById(R.id.trident_unlock_txt);
+        exit_txt = findViewById(R.id.exit_txt);
 
         //Buttons
         waterfall_btn = findViewById(R.id.waterfall_btn);
         tritons_key_btn = findViewById(R.id.tritons_key_btn);
-        column1_btn = findViewById(R.id.column1_btn);
         column2_btn = findViewById(R.id.column2_btn);
         column3_btn = findViewById(R.id.column3_btn);
         room_door_1_2_btn = findViewById(R.id.room_door_1_2_btn);
@@ -116,7 +175,9 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (waterfall_btn_str.equals("1")) {
-                    showAToast("Already pressed");
+                    waterfall_btn_str = "0";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
                 }
                 else {
                     waterfall_btn_str = "1";
@@ -130,24 +191,12 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (tritons_key_btn_str.equals("1")) {
-                    showAToast("Already pressed");
-                }
-                else {
-                    tritons_key_btn_str = "1";
+                    tritons_key_btn_str = "0";
                     UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
                     updateDatabaseAsyncTask.execute("");
                 }
-            }
-        });
-
-        column1_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (column1_btn_str.equals("1")) {
-                    showAToast("Already pressed");
-                }
                 else {
-                    column1_btn_str = "1";
+                    tritons_key_btn_str = "1";
                     UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
                     updateDatabaseAsyncTask.execute("");
                 }
@@ -158,7 +207,9 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (column2_btn_str.equals("1")) {
-                    showAToast("Already pressed");
+                    column2_btn_str = "0";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
                 }
                 else {
                     column2_btn_str = "1";
@@ -172,7 +223,9 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (column3_btn_str.equals("1")) {
-                    showAToast("Already pressed");
+                    column3_btn_str = "0";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
                 }
                 else {
                     column3_btn_str = "1";
@@ -186,7 +239,9 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (room_door_1_2_btn_str.equals("1")) {
-                    showAToast("Already pressed");
+                    room_door_1_2_btn_str = "0";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
                 }
                 else {
                     room_door_1_2_btn_str = "1";
@@ -200,7 +255,9 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (holy_molly_btn_str.equals("1")) {
-                    showAToast("Already pressed");
+                    holy_molly_btn_str = "0";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
                 }
                 else {
                     holy_molly_btn_str = "1";
@@ -214,7 +271,9 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (poseidon_btn_str.equals("1")) {
-                    showAToast("Already pressed");
+                    poseidon_btn_str = "0";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
                 }
                 else {
                     poseidon_btn_str = "1";
@@ -228,7 +287,9 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (hexagon_pattern_btn_str.equals("1")) {
-                    showAToast("Already pressed");
+                    hexagon_pattern_btn_str = "0";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
                 }
                 else {
                     hexagon_pattern_btn_str = "1";
@@ -242,7 +303,9 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (hexagon_cabinets_btn_str.equals("1")) {
-                    showAToast("Already pressed");
+                    hexagon_cabinets_btn_str = "0";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
                 }
                 else {
                     hexagon_cabinets_btn_str = "1";
@@ -256,7 +319,9 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (trident_unlock_btn_str.equals("1")) {
-                    showAToast("Already pressed");
+                    trident_unlock_btn_str = "0";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
                 }
                 else {
                     trident_unlock_btn_str = "1";
@@ -270,7 +335,9 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             @Override
             public void onClick(View view) {
                 if (exit_btn_str.equals("1")) {
-                    showAToast("Already pressed");
+                    exit_btn_str = "0";
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
                 }
                 else {
                     exit_btn_str = "1";
@@ -283,30 +350,38 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
         reset_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (reset_btn_str.equals("1")) {
-                    showAToast("Already pressed");
-                } else {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Atlantis.this);
-                    alertDialogBuilder.setMessage("Do you want to reset?");
-                    alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            reset_btn_str = "1";
-                            UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                            updateDatabaseAsyncTask.execute("");
-                        }
-                    });
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Atlantis.this);
+            alertDialogBuilder.setMessage("Do you want to reset?");
+            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                reset_btn_str = "0";
+                waterfall_btn_str = "0";
+                tritons_key_btn_str = "0";
+                column2_btn_str = "0";
+                column3_btn_str = "0";
+                room_door_1_2_btn_str = "0";
+                holy_molly_btn_str = "0";
+                poseidon_btn_str = "0";
+                hexagon_pattern_btn_str = "0";
+                hexagon_cabinets_btn_str = "0";
+                trident_unlock_btn_str = "0";
+                exit_btn_str = "0";
 
-                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
-
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
+                UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                updateDatabaseAsyncTask.execute("");
                 }
+            });
+
+            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+                }
+            });
+
+            AlertDialog alertDialog = alertDialogBuilder.create();
+            alertDialog.show();
             }
         });
 
@@ -325,8 +400,8 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             dialog.dismiss();
         }
         setRepeatingAsyncTask();
+        endToast = false;
         swipeRefreshLayout.setRefreshing(false);
-        cancelActivity = true;
     }
 
     @Override
@@ -339,7 +414,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
     }
 
     boolean checkWifi() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Mansion.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Atlantis.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
         if (networkInfo != null) {
@@ -368,11 +443,12 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
         return false;
     }
 
-    private class AsyncDataClass extends AsyncTask<String, Void, AtlantisRoomStatus> {
+    private class AsyncDataClass extends AsyncTask<Void, Void, AtlantisRoomStatus> {
 
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
+
             if (firstTimeLoading) {
                 dialog.setMessage("Loading...");
                 dialog.show();
@@ -380,21 +456,26 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
         }
 
         @Override
-        protected AtlantisRoomStatus doInBackground(String... params) {
+        protected AtlantisRoomStatus doInBackground(Void... params) {
             try {
                 InetAddress addr = InetAddress.getByName(ipAddress);
                 if (!addr.isReachable(2000)) {
-                    cancelActivity = true;
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            showAToast("Connection to server failed");
+                            showAToast("Server not reachable\nCheck IP Address from settings");
                         }
                     });
                     return null;
                 }
             } catch (UnknownHostException e) {
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAToast("Connection to server failed\nCheck IP Address from settings");
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -407,13 +488,25 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                 StatusLine statusLine = response.getStatusLine();
                 if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                     jsonResult = inputStreamToString(response.getEntity().getContent()).toString();
-                    System.out.println("Returned Json object " + jsonResult);
+                    //System.out.println("Returned Json object " + jsonResult);
                 }
 
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAToast("Connection to server failed");
+                    }
+                });
             } catch (HttpHostConnectException e){
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAToast("Connection to server failed\nCheck IP Address from settings");
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -436,7 +529,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                 return null;
             }
 
-            System.out.println("Resulted Value: " + jsonResult);
+            //System.out.println("Resulted Value: " + jsonResult);
             List<AtlantisRoomStatus> parsedObject = returnParsedJsonObject(jsonResult);
             if (parsedObject == null) {
                 return null;
@@ -461,17 +554,18 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                 if (dialog.isShowing()){
                     dialog.dismiss();
                 }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setStatus(false);
+                    }
+                });
+
                 return;
             }
 
-//            tritons_key.setText("Triton's Key: " + roomObject.getTritons_key_status());
-//            room_door_1_2.setText("1st - 2nd Room Door: " + roomObject.getRoom_door_1_2_status());
-//            holy_molly.setText("Holy Molly: " + roomObject.getHoly_molly_status());
-//            poseidons_chest.setText("Poseidon's Chest: " + roomObject.getPoseidons_chest_status());
-//            hexagon_cabinets.setText("Hexagon Cabinets: " + roomObject.getHexagon_cabinets_status());
             waterfall_btn_str = roomObject.getWaterfall_btn();
             tritons_key_btn_str = roomObject.getTritons_key_btn();
-            column1_btn_str = roomObject.getColumn1_btn();
             column2_btn_str = roomObject.getColumn2_btn();
             column3_btn_str = roomObject.getColumn3_btn();
             room_door_1_2_btn_str = roomObject.getRoom_door_1_2_btn();
@@ -482,6 +576,15 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             trident_unlock_btn_str = roomObject.getTrident_unlock_btn();
             exit_btn_str = roomObject.getExit_btn();
             reset_btn_str = roomObject.getReset_btn();
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    endToast = false;
+                    setStatus(true);
+                    updateTxts();
+                }
+            });
         }
 
         private StringBuilder inputStreamToString(InputStream is) {
@@ -566,13 +669,10 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                         @Override
                         public void run() {
                             try {
-                                if (!cancelActivity) {
-                                    jsonAsync = new Atlantis.AsyncDataClass();
-                                    jsonAsync.execute("");
-                                }
-                                else{
-                                    timer.cancel();
-                                }
+                                jsonAsync = new Atlantis.AsyncDataClass();
+                                jsonAsync.execute();
+                                Atlantis.checkIPAddress checkIPAddress = new Atlantis.checkIPAddress();
+                                checkIPAddress.execute();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -600,7 +700,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                             "&hexagon_cabinets=" + hexagon_cabinets_str +
                             "&waterfall_btn=" + waterfall_btn_str +
                             "&tritons_key_btn=" + tritons_key_btn_str +
-                            "&column1_btn=" + column1_btn_str +
+                            "&column1_btn=0"+
                             "&column2_btn=" + column2_btn_str +
                             "&column3_btn=" + column3_btn_str +
                             "&room_door_1_2_btn=" + room_door_1_2_btn_str +
@@ -617,21 +717,146 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                 System.out.println((response.getEntity().getContent()).toString());
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAToast("Failed. Try Again");
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+            endToast = false;
             System.out.println("Data Sent");
 
             return 0;
         }
     }
 
-    public void showAToast (String message){
-        if (toast != null) {
-            toast.cancel();
+    private class checkIPAddress extends AsyncTask<Void, Void, Boolean>{
+        @Override
+        protected Boolean doInBackground(Void... params){
+            try {
+                InetAddress addr = InetAddress.getByName(ipAddress);
+                if (!addr.isReachable(1000)) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!endToast) {
+                                showAToast("Connection to server failed\nCheck IP Address from settings");
+                                endToast = true;
+                            }
+                        }
+                    });
+                    return false;
+                }
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return true;
         }
-        toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
-        toast.show();
+    }
+
+    public void updateTxts(){
+        if (waterfall_btn_str.equals("0")){
+            waterfall_txt_str = "Off";
+        }
+        else{
+            waterfall_txt_str = "On";
+        }
+
+        if (tritons_key_btn_str.equals("0")){
+            tritons_key_txt_str = "Off";
+        }
+        else{
+            tritons_key_txt_str = "On";
+        }
+
+        if (column2_btn_str.equals("0")){
+            column2_txt_str = "Off";
+        }
+        else{
+            column2_txt_str = "On";
+        }
+
+        if (column3_btn_str.equals("0")){
+            column3_txt_str = "Off";
+        }
+        else{
+            column3_txt_str = "On";
+        }
+
+        if (room_door_1_2_btn_str.equals("0")){
+            room_door_1_2_txt_str = "Off";
+        }
+        else{
+            room_door_1_2_txt_str = "On";
+        }
+
+        if (holy_molly_btn_str.equals("0")){
+            holy_molly_txt_str = "Off";
+        }
+        else{
+            holy_molly_txt_str = "On";
+        }
+
+        if (poseidon_btn_str.equals("0")){
+            poseidon_txt_str = "Off";
+        }
+        else{
+            poseidon_txt_str = "On";
+        }
+
+        if (hexagon_pattern_btn_str.equals("0")){
+            hexagon_pattern_txt_str = "Off";
+        }
+        else{
+            hexagon_pattern_txt_str = "On";
+        }
+
+        if (hexagon_cabinets_btn_str.equals("0")){
+            hexagon_cabinets_txt_str = "Off";
+        }
+        else{
+            hexagon_cabinets_txt_str = "On";
+        }
+
+        if (trident_unlock_btn_str.equals("0")){
+            trident_unlock_txt_str = "Off";
+        }
+        else{
+            trident_unlock_txt_str = "On";
+        }
+
+        if (exit_btn_str.equals("0")){
+            exit_txt_str = "Off";
+        }
+        else{
+            exit_txt_str = "On";
+        }
+
+        waterfall_txt.setText(waterfall_txt_str);
+        tritons_key_txt.setText(tritons_key_txt_str);
+        column2_txt.setText(column2_txt_str);
+        column3_txt.setText(column3_txt_str);
+        room_door_1_2_txt.setText(room_door_1_2_txt_str);
+        holy_molly_txt.setText(holy_molly_txt_str);
+        poseidon_txt.setText(poseidon_txt_str);
+        hexagon_pattern_txt.setText(hexagon_pattern_txt_str);
+        hexagon_cabinets_txt.setText(hexagon_cabinets_txt_str);
+        trident_unlock_txt.setText(trident_unlock_txt_str);
+        exit_txt.setText(exit_txt_str);
+    }
+
+    public void showAToast (String message){
+        if (!endToast) {
+            toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+            toast.show();
+            endToast = true;
+        }
     }
 }

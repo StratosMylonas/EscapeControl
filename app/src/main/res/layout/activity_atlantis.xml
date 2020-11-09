@@ -37,6 +37,32 @@
                 app:drawableStartCompat="@drawable/ic_atlantis_logo"
                 app:drawableLeftCompat="@drawable/ic_atlantis_logo" />
 
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginEnd="10dp">
+
+                            <TextView
+                                android:id="@+id/serverStatus"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:textColor="#FFFFFF"
+                                android:layout_marginEnd="10dp"
+                                android:layout_marginRight="10dp"
+                                android:textSize="20sp"/>
+
+                            <ImageView
+                                android:id="@+id/statusImg"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:src="@drawable/offline"
+                                android:layout_gravity="center_vertical" />
+                </LinearLayout>
+
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -51,72 +77,13 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:text="@string/states_header"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:textSize="25sp"-->
-<!--                            android:layout_gravity="center_horizontal"-->
-<!--                            android:textAlignment="center"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/tritons_key"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/room_door_1_2"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/holy_molly"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/poseidons_chest"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
-<!--                        <TextView-->
-<!--                            android:id="@+id/hexagon_cabinets"-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:textColor="#FFFFFF"-->
-<!--                            android:layout_marginTop="10dp"-->
-<!--                            android:layout_marginLeft="10dp"-->
-<!--                            android:layout_marginStart="10dp"-->
-<!--                            android:textSize="20sp"/>-->
-
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/actions_header"
                             android:textColor="#FFFFFF"
-                            android:layout_marginTop="20dp"
                             android:textSize="25sp"
+                            android:layout_marginBottom="10dp"
                             android:layout_gravity="center_horizontal"
                             android:textAlignment="center"/>
 
@@ -132,10 +99,9 @@
                                 android:minHeight="70dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginLeft="10dp"
-                                android:layout_marginTop="20dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_marginEnd="5dp"
                                 android:layout_marginRight="5dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_weight="1"
                                 style="?android:attr/button"
                                 android:text="@string/atlantis_waterfall" />
@@ -144,8 +110,7 @@
                                 android:id="@+id/poseidon_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginTop="20dp"
-                                android:layout_marginBottom="10dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginRight="10dp"
@@ -159,35 +124,29 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
 
-                            <Button
-                                android:id="@+id/tritons_key_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:minHeight="70dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_marginEnd="5dp"
-                                style="?android:attr/button"
-                                android:text="@string/atlantis_tritons_key"
+                            <TextView
+                                android:id="@+id/waterfall_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"/>
 
-                            <Button
-                                android:id="@+id/hexagon_pattern_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginEnd="10dp"
-                                style="?android:attr/button"
-                                android:text="@string/atlantis_hexagon_pattern"
+                            <TextView
+                                android:id="@+id/poseidon_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -198,32 +157,61 @@
                             android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/column1_btn"
+                                android:id="@+id/hexagon_pattern_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:minHeight="70dp"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginRight="5dp"
                                 android:layout_marginEnd="5dp"
                                 style="?android:attr/button"
-                                android:text="@string/atlantis_column1"
+                                android:text="@string/atlantis_hexagon_pattern"
                                 android:layout_weight="1"/>
 
                             <Button
-                                android:id="@+id/hexagon_cabinets_btn"
+                                android:id="@+id/tritons_key_btn"
+                                style="?android:attr/button"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginLeft="5dp"
                                 android:layout_marginStart="5dp"
-                                android:layout_marginRight="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginTop="10dp"
                                 android:layout_marginEnd="10dp"
-                                style="?android:attr/button"
-                                android:text="@string/atlantis_hexagon_cabinets"
+                                android:layout_marginRight="10dp"
+                                android:layout_weight="1"
+                                android:minHeight="70dp"
+                                android:text="@string/atlantis_tritons_key" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:id="@+id/hexagon_pattern_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:id="@+id/tritons_key_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -239,7 +227,6 @@
                                 android:layout_height="match_parent"
                                 android:minHeight="70dp"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginStart="10dp"
                                 android:layout_marginRight="5dp"
@@ -249,11 +236,74 @@
                                 android:layout_weight="1"/>
 
                             <Button
+                                android:id="@+id/hexagon_cabinets_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginStart="5dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginEnd="10dp"
+                                style="?android:attr/button"
+                                android:text="@string/atlantis_hexagon_cabinets"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:id="@+id/column2_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:id="@+id/hexagon_cabinets_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <Button
+                                android:id="@+id/column3_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:minHeight="70dp"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginStart="10dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginEnd="5dp"
+                                style="?android:attr/button"
+                                android:text="@string/atlantis_column3"
+                                android:layout_weight="1"/>
+
+                            <Button
                                 android:id="@+id/trident_unlock_btn"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="5dp"
                                 android:layout_marginStart="5dp"
                                 android:layout_marginRight="10dp"
@@ -265,23 +315,52 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:id="@+id/column3_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:id="@+id/trident_unlock_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:orientation="horizontal">
 
                         <Button
-                            android:id="@+id/column3_btn"
+                            android:id="@+id/room_door_1_2_btn"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:minHeight="70dp"
                             android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginStart="10dp"
                             android:layout_marginRight="5dp"
                             android:layout_marginEnd="5dp"
                             style="?android:attr/button"
-                            android:text="@string/atlantis_column3"
+                            android:text="@string/atlantis_room_door_1_2"
                             android:layout_weight="1"/>
 
                         <Button
@@ -289,7 +368,6 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_marginTop="10dp"
-                            android:layout_marginBottom="10dp"
                             android:layout_marginLeft="5dp"
                             android:layout_marginStart="5dp"
                             android:layout_marginRight="10dp"
@@ -303,35 +381,29 @@
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
 
-                            <Button
-                                android:id="@+id/room_door_1_2_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:minHeight="70dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_marginEnd="5dp"
-                                style="?android:attr/button"
-                                android:text="@string/atlantis_room_door_1_2"
+                            <TextView
+                                android:id="@+id/room_door_1_2_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"/>
 
-                            <Button
-                                android:id="@+id/exit_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:text="@string/exit"
-                                style="?android:attr/button"
+                            <TextView
+                                android:id="@+id/holy_molly_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
@@ -342,18 +414,58 @@
                             android:orientation="horizontal">
 
                             <Button
-                                android:id="@+id/reset_btn"
-                                android:layout_width="0dp"
+                                android:id="@+id/exit_btn"
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:minHeight="70dp"
                                 android:layout_marginTop="10dp"
-                                android:layout_marginBottom="10dp"
                                 android:layout_marginLeft="10dp"
                                 android:layout_marginStart="10dp"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginEnd="5dp"
+                                style="?android:attr/button"
+                                android:text="@string/exit"
+                                android:layout_weight="1"/>
+
+                            <Button
+                                android:id="@+id/reset_btn"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginTop="10dp"
+                                android:layout_marginLeft="5dp"
+                                android:layout_marginStart="5dp"
                                 android:layout_marginRight="10dp"
                                 android:layout_marginEnd="10dp"
-                                android:text="@string/reset"
                                 android:textColor="#AA0000"
+                                android:text="@string/reset"
+                                style="?android:attr/button"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+                            android:layout_marginBottom="10dp">
+
+                            <TextView
+                                android:id="@+id/exit_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Off"
+                                android:textColor="#FFFFFF"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_weight="1"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:textSize="18sp"
+                                android:textAlignment="center"
+                                android:layout_gravity="center_horizontal"
                                 android:layout_weight="1"/>
 
                         </LinearLayout>
