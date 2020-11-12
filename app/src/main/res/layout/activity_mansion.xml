@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Atlantis"
-    android:background="@color/colorPrimaryDark">
+    android:background="#000000"
+    tools:context=".Mansion">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -60,12 +60,34 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/offline"
+                    android:contentDescription="@string/mansion_logo"
                     android:layout_gravity="center_vertical" />
             </LinearLayout>
 
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="-30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/logo"
+                android:contentDescription="@string/logo"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/actions_header"
+                android:textColor="#FFFFFF"
+                android:textSize="25sp"
+                android:textAlignment="center"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="-10dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"/>
+
             <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/swipeRefreshLayout">
 
                 <ScrollView
@@ -77,333 +99,424 @@
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:orientation="horizontal"
+                            android:layout_margin="2dp"
+                            android:background="@drawable/layout_bg">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/tarrotCombination1NameTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#FFFFFF"
+                                    android:text="@string/mansion_tarrot_combination_1"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="22sp"/>
+
+                                <TextView
+                                    android:id="@+id/tarrotCombination1StatusTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorAccent"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:textSize="15sp"/>
+
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/tarrotCombination1Switch"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:theme="@style/SCBSwitch"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:orientation="horizontal"
+                            android:layout_margin="2dp"
+                            android:background="@drawable/layout_bg">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/tarrotCombination2NameTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#FFFFFF"
+                                    android:text="@string/mansion_tarrot_combination_2"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="22sp"/>
+
+                                <TextView
+                                    android:id="@+id/tarrotCombination2StatusTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorAccent"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:textSize="15sp"/>
+
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/tarrotCombination2Switch"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:theme="@style/SCBSwitch"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:orientation="horizontal"
+                            android:layout_margin="2dp"
+                            android:background="@drawable/layout_bg">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/tarrotCombination3NameTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#FFFFFF"
+                                    android:text="@string/mansion_tarrot_combination_3"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="22sp"/>
+
+                                <TextView
+                                    android:id="@+id/tarrotCombination3StatusTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorAccent"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:textSize="15sp"/>
+
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/tarrotCombination3Switch"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:theme="@style/SCBSwitch"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:orientation="horizontal"
+                            android:layout_margin="2dp"
+                            android:background="@drawable/layout_bg">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/radioNameTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#FFFFFF"
+                                    android:text="@string/mansion_radio_on"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="22sp"/>
+
+                                <TextView
+                                    android:id="@+id/radioStatusTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorAccent"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:textSize="15sp"/>
+
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/radioSwitch"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:theme="@style/SCBSwitch"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:orientation="horizontal"
+                            android:layout_margin="2dp"
+                            android:background="@drawable/layout_bg"
+                            android:weightSum="2">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/dollNameTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#FFFFFF"
+                                    android:text="@string/mansion_doll"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="22sp"/>
+
+                                <TextView
+                                    android:id="@+id/dollStatusTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorAccent"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:textSize="15sp"/>
+
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/dollSwitch"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:theme="@style/SCBSwitch"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:orientation="horizontal"
+                            android:layout_margin="2dp"
+                            android:background="@drawable/layout_bg">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/shelf1NameTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#FFFFFF"
+                                    android:text="@string/mansion_shelf1"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="22sp"/>
+
+                                <TextView
+                                    android:id="@+id/shelf1StatusTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorAccent"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:textSize="15sp"/>
+
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/shelf1Switch"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:theme="@style/SCBSwitch"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:orientation="horizontal"
+                            android:layout_margin="2dp"
+                            android:background="@drawable/layout_bg">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/shelf2NameTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#FFFFFF"
+                                    android:text="@string/mansion_shelf2"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="22sp"/>
+
+                                <TextView
+                                    android:id="@+id/shelf2StatusTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorAccent"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:textSize="15sp"/>
+
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/shelf2Switch"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:theme="@style/SCBSwitch"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:orientation="horizontal"
+                            android:layout_margin="2dp"
+                            android:background="@drawable/layout_bg">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/windowDoorsNameTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#FFFFFF"
+                                    android:text="@string/mansion_window_doors"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="22sp"/>
+
+                                <TextView
+                                    android:id="@+id/windowDoorsStatusTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorAccent"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:textSize="15sp"/>
+
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/windowDoorsSwitch"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:theme="@style/SCBSwitch"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="80dp"
+                            android:orientation="horizontal"
+                            android:layout_margin="2dp"
+                            android:background="@drawable/layout_bg">
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical"
+                                android:layout_gravity="center"
+                                android:layout_weight="1">
+
+                                <TextView
+                                    android:id="@+id/exitNameTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="#FFFFFF"
+                                    android:text="@string/exit"
+                                    android:layout_marginStart="10dp"
+                                    android:layout_marginLeft="10dp"
+                                    android:textSize="22sp"/>
+
+                                <TextView
+                                    android:id="@+id/exitStatusTxt"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/colorAccent"
+                                    android:layout_marginStart="15dp"
+                                    android:layout_marginLeft="15dp"
+                                    android:textSize="15sp"/>
+
+                            </LinearLayout>
+
+                            <androidx.appcompat.widget.SwitchCompat
+                                android:id="@+id/exitSwitch"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:theme="@style/SCBSwitch"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                        <Button
+                            android:id="@+id/reset_btn"
+                            android:layout_width="300dp"
                             android:layout_height="wrap_content"
-                            android:text="@string/actions_header"
-                            android:textColor="#FFFFFF"
-                            android:textSize="25sp"
-                            android:layout_marginBottom="10dp"
-                            android:layout_gravity="center_horizontal"
-                            android:textAlignment="center"/>
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="20dp"
+                            android:layout_gravity="center"
+                            android:text="@string/reset"
+                            android:gravity="center"
+                            android:textColor="@color/colorPrimary"
+                            android:background="@drawable/layout_bg"/>
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <Button
-                                android:id="@+id/tarrot_combination_1_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:minHeight="70dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginEnd="5dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_weight="1"
-                                style="?android:attr/button"
-                                android:text="@string/mansion_tarrot_combination_1" />
-
-                            <Button
-                                android:id="@+id/radio_on_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginEnd="10dp"
-                                style="?android:attr/button"
-                                android:text="@string/mansion_radio_on"
-                                android:layout_weight="1"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="10dp">
-
-                            <TextView
-                                android:id="@+id/tarrot_combination_1_txt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Off"
-                                android:textColor="#FFFFFF"
-                                android:textSize="18sp"
-                                android:textAlignment="center"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="1"/>
-
-                            <TextView
-                                android:id="@+id/radio_on_txt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Off"
-                                android:textColor="#FFFFFF"
-                                android:textSize="18sp"
-                                android:textAlignment="center"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="1"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <Button
-                                android:id="@+id/tarrot_combination_2_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_marginEnd="5dp"
-                                style="?android:attr/button"
-                                android:text="@string/mansion_tarrot_combination_2"
-                                android:layout_weight="1"/>
-
-                            <Button
-                                android:id="@+id/doll_btn"
-                                style="?android:attr/button"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginEnd="10dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_weight="1"
-                                android:minHeight="70dp"
-                                android:text="@string/mansion_doll" />
-
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="10dp">
-
-                            <TextView
-                                android:id="@+id/tarrot_combination_2_txt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Off"
-                                android:textColor="#FFFFFF"
-                                android:textSize="18sp"
-                                android:textAlignment="center"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="1"/>
-
-                            <TextView
-                                android:id="@+id/doll_txt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Off"
-                                android:textColor="#FFFFFF"
-                                android:textSize="18sp"
-                                android:textAlignment="center"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="1"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <Button
-                                android:id="@+id/tarrot_combination_3_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:minHeight="70dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_marginEnd="5dp"
-                                style="?android:attr/button"
-                                android:text="@string/mansion_tarrot_combination_3"
-                                android:layout_weight="1"/>
-
-                            <Button
-                                android:id="@+id/shelf_1_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginEnd="10dp"
-                                style="?android:attr/button"
-                                android:text="@string/mansion_shelf1"
-                                android:layout_weight="1"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="10dp">
-
-                            <TextView
-                                android:id="@+id/tarrot_combination_3_txt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Off"
-                                android:textColor="#FFFFFF"
-                                android:textSize="18sp"
-                                android:textAlignment="center"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="1"/>
-
-                            <TextView
-                                android:id="@+id/shelf_1_txt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Off"
-                                android:textColor="#FFFFFF"
-                                android:textSize="18sp"
-                                android:textAlignment="center"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="1"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <Button
-                                android:id="@+id/window_doors_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:minHeight="70dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_marginEnd="5dp"
-                                style="?android:attr/button"
-                                android:text="@string/mansion_window_doors"
-                                android:layout_weight="1"/>
-
-                            <Button
-                                android:id="@+id/shelf_2_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginEnd="10dp"
-                                style="?android:attr/button"
-                                android:text="@string/mansion_shelf2"
-                                android:layout_weight="1"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="10dp">
-
-                            <TextView
-                                android:id="@+id/window_doors_txt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Off"
-                                android:textColor="#FFFFFF"
-                                android:textSize="18sp"
-                                android:textAlignment="center"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="1"/>
-
-                            <TextView
-                                android:id="@+id/shelf_2_txt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Off"
-                                android:textColor="#FFFFFF"
-                                android:textSize="18sp"
-                                android:textAlignment="center"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="1"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal">
-
-                            <Button
-                                android:id="@+id/exit_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:minHeight="70dp"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="10dp"
-                                android:layout_marginStart="10dp"
-                                android:layout_marginRight="5dp"
-                                android:layout_marginEnd="5dp"
-                                style="?android:attr/button"
-                                android:text="@string/exit"
-                                android:layout_weight="1"/>
-
-                            <Button
-                                android:id="@+id/reset_btn"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:layout_marginTop="10dp"
-                                android:layout_marginLeft="5dp"
-                                android:layout_marginStart="5dp"
-                                android:layout_marginRight="10dp"
-                                android:layout_marginEnd="10dp"
-                                style="?android:attr/button"
-                                android:textColor="#AA0000"
-                                android:text="@string/reset"
-                                android:layout_weight="1"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:orientation="horizontal"
-                            android:layout_marginBottom="10dp">
-
-                            <TextView
-                                android:id="@+id/exit_txt"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Off"
-                                android:textColor="#FFFFFF"
-                                android:textSize="18sp"
-                                android:textAlignment="center"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="1"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@color/colorAccent"
-                                android:textAlignment="center"
-                                android:layout_gravity="center_horizontal"
-                                android:layout_weight="1"/>
-
-                        </LinearLayout>
                     </LinearLayout>
 
                 </ScrollView>

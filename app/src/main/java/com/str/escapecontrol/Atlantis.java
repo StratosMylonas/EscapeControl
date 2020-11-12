@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.apache.http.HttpResponse;
@@ -53,29 +54,17 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
 
     private Timer timer;
     private Atlantis.AsyncDataClass jsonAsync;
+
     String ipAddress;
+    static int numberOfButtons = 11;
 
-    Button waterfall_btn, tritons_key_btn, column2_btn,
-           column3_btn, room_door_1_2_btn, holy_molly_btn, poseidon_btn,
-           hexagon_pattern_btn, hexagon_cabinets_btn, trident_unlock_btn,
-           exit_btn, reset_btn;
+    SwitchCompat[] switchCompats = new SwitchCompat[numberOfButtons];
+    TextView[] textViews = new TextView[numberOfButtons];
 
-    String  tritons_key_str = "0", room_door_1_2_str = "0", holy_molly_str = "0",
-            poseidons_chest_str = "0", hexagon_cabinets_str = "0", waterfall_btn_str = "0",
-            tritons_key_btn_str = "0", column2_btn_str = "0",
-            column3_btn_str = "0", room_door_1_2_btn_str = "0", holy_molly_btn_str = "0",
-            poseidon_btn_str = "0", hexagon_pattern_btn_str = "0", hexagon_cabinets_btn_str = "0",
-            trident_unlock_btn_str = "0", exit_btn_str = "0", reset_btn_str = "0";
+    String[] switchCombat_str = new String[numberOfButtons];
+    String[] textViews_str = new String[numberOfButtons];
 
-    TextView waterfall_txt, tritons_key_txt, column2_txt, column3_txt, room_door_1_2_txt,
-             holy_molly_txt, poseidon_txt, hexagon_pattern_txt, hexagon_cabinets_txt, trident_unlock_txt,
-             exit_txt;
-
-    String  waterfall_txt_str = "Off", tritons_key_txt_str = "Off",
-            column2_txt_str = "Off", column3_txt_str = "Off", room_door_1_2_txt_str = "Off",
-            holy_molly_txt_str = "Off", poseidon_txt_str = "Off", hexagon_pattern_txt_str = "Off",
-            hexagon_cabinets_txt_str = "Off", trident_unlock_txt_str = "Off", exit_txt_str = "Off";
-
+    Button resetBtn;
     TextView statusTxt;
     ImageView statusImg;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -89,12 +78,12 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
         setContentView(R.layout.activity_atlantis);
 
         getIpAddress();
-        findIds();
+        setup();
         animateStatusImage();
         setRepeatingAsyncTask();
         dialog = new ProgressDialog(Atlantis.this);
         onClickListeners();
-        updateTxts();
+        updateSwitches();
     }
 
     void animateStatusImage(){
@@ -137,251 +126,92 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
         database.close();
     }
 
-    void findIds(){
-        //TextViews
-        statusTxt = findViewById(R.id.serverStatus);
-        waterfall_txt = findViewById(R.id.waterfall_txt);
-        tritons_key_txt = findViewById(R.id.tritons_key_txt);
-        column2_txt = findViewById(R.id.column2_txt);
-        column3_txt = findViewById(R.id.column3_txt);
-        room_door_1_2_txt = findViewById(R.id.room_door_1_2_txt);
-        holy_molly_txt = findViewById(R.id.holy_molly_txt);
-        poseidon_txt = findViewById(R.id.poseidon_txt);
-        hexagon_pattern_txt = findViewById(R.id.hexagon_pattern_txt);
-        hexagon_cabinets_txt = findViewById(R.id.hexagon_cabinets_txt);
-        trident_unlock_txt = findViewById(R.id.trident_unlock_txt);
-        exit_txt = findViewById(R.id.exit_txt);
+    void setup(){
+        //find ids
+        switchCompats[0] = findViewById(R.id.waterfallSwitch);
+        switchCompats[1] = findViewById(R.id.tritonsKeySwitch);
+        switchCompats[2] = findViewById(R.id.column2Switch);
+        switchCompats[3] = findViewById(R.id.column3Switch);
+        switchCompats[4] = findViewById(R.id.roomDoor12Switch);
+        switchCompats[5] = findViewById(R.id.holyMollySwitch);
+        switchCompats[6] = findViewById(R.id.poseidonSwitch);
+        switchCompats[7] = findViewById(R.id.hexagonPatternSwitch);
+        switchCompats[8] = findViewById(R.id.hexagonCabinetSwitch);
+        switchCompats[9] = findViewById(R.id.tridentUnlockSwitch);
+        switchCompats[10] = findViewById(R.id.exitSwitch);
 
-        //Buttons
-        waterfall_btn = findViewById(R.id.waterfall_btn);
-        tritons_key_btn = findViewById(R.id.tritons_key_btn);
-        column2_btn = findViewById(R.id.column2_btn);
-        column3_btn = findViewById(R.id.column3_btn);
-        room_door_1_2_btn = findViewById(R.id.room_door_1_2_btn);
-        holy_molly_btn = findViewById(R.id.holy_molly_btn);
-        poseidon_btn = findViewById(R.id.poseidon_btn);
-        hexagon_pattern_btn = findViewById(R.id.hexagon_pattern_btn);
-        hexagon_cabinets_btn = findViewById(R.id.hexagon_cabinets_btn);
-        trident_unlock_btn = findViewById(R.id.trident_unlock_btn);
-        exit_btn = findViewById(R.id.exit_btn);
-        reset_btn = findViewById(R.id.reset_btn);
+        resetBtn = findViewById(R.id.reset_btn);
+
+        //TextViews
+        textViews[0] = findViewById(R.id.waterfallStatusTxt);
+        textViews[1] = findViewById(R.id.tritonsKeyStatusTxt);
+        textViews[2] = findViewById(R.id.column2StatusTxt);
+        textViews[3] = findViewById(R.id.column3StatusTxt);
+        textViews[4] = findViewById(R.id.roomDoor12StatusTxt);
+        textViews[5] = findViewById(R.id.holyMollyStatusTxt);
+        textViews[6] = findViewById(R.id.poseidonStatusTxt);
+        textViews[7] = findViewById(R.id.hexagonPatternStatusTxt);
+        textViews[8] = findViewById(R.id.hexagonCabinetStatusTxt);
+        textViews[9] = findViewById(R.id.tridentUnlockStatusTxt);
+        textViews[10] = findViewById(R.id.exitStatusTxt);
+
+        statusTxt = findViewById(R.id.serverStatus);
 
         //Swipe Refresh
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
+        //initialise arrays of texts
+        for (int i=0; i<numberOfButtons; i++){
+            switchCombat_str[i] = "0";
+            textViews_str[i] = "Off";
+        }
+
     }
 
     void onClickListeners(){
-        waterfall_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (waterfall_btn_str.equals("1")) {
-                    waterfall_btn_str = "0";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    waterfall_btn_str = "1";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
 
-        tritons_key_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tritons_key_btn_str.equals("1")) {
-                    tritons_key_btn_str = "0";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    tritons_key_btn_str = "1";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        column2_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (column2_btn_str.equals("1")) {
-                    column2_btn_str = "0";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    column2_btn_str = "1";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        column3_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (column3_btn_str.equals("1")) {
-                    column3_btn_str = "0";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    column3_btn_str = "1";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        room_door_1_2_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (room_door_1_2_btn_str.equals("1")) {
-                    room_door_1_2_btn_str = "0";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    room_door_1_2_btn_str = "1";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        holy_molly_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (holy_molly_btn_str.equals("1")) {
-                    holy_molly_btn_str = "0";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    holy_molly_btn_str = "1";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        poseidon_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (poseidon_btn_str.equals("1")) {
-                    poseidon_btn_str = "0";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    poseidon_btn_str = "1";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        hexagon_pattern_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (hexagon_pattern_btn_str.equals("1")) {
-                    hexagon_pattern_btn_str = "0";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    hexagon_pattern_btn_str = "1";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        hexagon_cabinets_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (hexagon_cabinets_btn_str.equals("1")) {
-                    hexagon_cabinets_btn_str = "0";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    hexagon_cabinets_btn_str = "1";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        trident_unlock_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (trident_unlock_btn_str.equals("1")) {
-                    trident_unlock_btn_str = "0";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    trident_unlock_btn_str = "1";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        exit_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (exit_btn_str.equals("1")) {
-                    exit_btn_str = "0";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    exit_btn_str = "1";
-                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        reset_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Atlantis.this);
-            alertDialogBuilder.setMessage("Do you want to reset?");
-            alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        for (int i=0; i<numberOfButtons; i++){
+            switchCompats[i].setOnClickListener(new MyButtonOnClickListener(i) {
                 @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                reset_btn_str = "0";
-                waterfall_btn_str = "0";
-                tritons_key_btn_str = "0";
-                column2_btn_str = "0";
-                column3_btn_str = "0";
-                room_door_1_2_btn_str = "0";
-                holy_molly_btn_str = "0";
-                poseidon_btn_str = "0";
-                hexagon_pattern_btn_str = "0";
-                hexagon_cabinets_btn_str = "0";
-                trident_unlock_btn_str = "0";
-                exit_btn_str = "0";
+                public void onClick(View view){
+                    if (switchCombat_str[index].equals("1")){
+                        switchCombat_str[index] = "0";
+                    }
+                    else{
+                        switchCombat_str[index] = "1";
+                    }
 
-                UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                updateDatabaseAsyncTask.execute("");
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                    updateDatabaseAsyncTask.execute("");
                 }
             });
+        }
 
-            alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-                }
-            });
+        resetBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Atlantis.this);
+                alertDialogBuilder.setMessage("Do you want to reset?");
+                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        for (int index=0; index<numberOfButtons; index++){
+                            switchCombat_str[index] = "0";
+                        }
+                        Atlantis.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                        updateDatabaseAsyncTask.execute("");
+                    }
+                });
 
-            AlertDialog alertDialog = alertDialogBuilder.create();
-            alertDialog.show();
+                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 
@@ -564,25 +394,16 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                 return;
             }
 
-            waterfall_btn_str = roomObject.getWaterfall_btn();
-            tritons_key_btn_str = roomObject.getTritons_key_btn();
-            column2_btn_str = roomObject.getColumn2_btn();
-            column3_btn_str = roomObject.getColumn3_btn();
-            room_door_1_2_btn_str = roomObject.getRoom_door_1_2_btn();
-            holy_molly_btn_str = roomObject.getHoly_molly_btn();
-            poseidon_btn_str = roomObject.getPoseidon_btn();
-            hexagon_pattern_btn_str = roomObject.getHexagon_pattern_btn();
-            hexagon_cabinets_btn_str = roomObject.getHexagon_cabinets_btn();
-            trident_unlock_btn_str = roomObject.getTrident_unlock_btn();
-            exit_btn_str = roomObject.getExit_btn();
-            reset_btn_str = roomObject.getReset_btn();
+            for (int i=0; i<numberOfButtons; i++) {
+                switchCombat_str[i] = roomObject.getBtnString(i);
+            }
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     endToast = false;
                     setStatus(true);
-                    updateTxts();
+                    updateSwitches();
                 }
             });
         }
@@ -620,27 +441,20 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                 JSONObject jsonChildNode;
                 try {
                     jsonChildNode = jsonArray.getJSONObject(i);
-                    String tritons_key = jsonChildNode.getString("tritons_key");
-                    String room_door_1_2 = jsonChildNode.getString("room_door_1_2");
-                    String holy_molly = jsonChildNode.getString("holy_molly");
-                    String poseidons_chest = jsonChildNode.getString("poseidons_chest");
-                    String hexagon_cabinets = jsonChildNode.getString("hexagon_cabinets");
-                    String waterfall_btn = jsonChildNode.getString("waterfall_btn");
-                    String tritons_key_btn = jsonChildNode.getString("tritons_key_btn");
-                    String column1_btn = jsonChildNode.getString("column1_btn");
-                    String column2_btn = jsonChildNode.getString("column2_btn");
-                    String column3_btn = jsonChildNode.getString("column3_btn");
-                    String room_door_1_2_btn = jsonChildNode.getString("room_door_1_2_btn");
-                    String holy_molly_btn = jsonChildNode.getString("holy_molly_btn");
-                    String poseidon_btn = jsonChildNode.getString("poseidon_btn");
-                    String hexagon_pattern_btn = jsonChildNode.getString("hexagon_pattern_btn");
-                    String hexagon_cabinets_btn = jsonChildNode.getString("hexagon_cabinets_btn");
-                    String trident_unlock_btn = jsonChildNode.getString("trident_unlock_btn");
-                    String exit_btn = jsonChildNode.getString("exit_btn");
-                    String reset_btn = jsonChildNode.getString("reset_btn");
-                    newItemObject = new AtlantisRoomStatus(tritons_key, room_door_1_2, holy_molly, poseidons_chest, hexagon_cabinets, waterfall_btn,
-                                                           tritons_key_btn, column1_btn, column2_btn, column3_btn, room_door_1_2_btn, holy_molly_btn,
-                                                           poseidon_btn, hexagon_pattern_btn, hexagon_cabinets_btn, trident_unlock_btn, exit_btn, reset_btn);
+                    String[] strings = new String[numberOfButtons];
+                    strings[0] = jsonChildNode.getString("waterfall_btn");
+                    strings[1] = jsonChildNode.getString("tritons_key_btn");
+                    strings[2] = jsonChildNode.getString("column2_btn");
+                    strings[3] = jsonChildNode.getString("column3_btn");
+                    strings[4] = jsonChildNode.getString("room_door_1_2_btn");
+                    strings[5] = jsonChildNode.getString("holy_molly_btn");
+                    strings[6] = jsonChildNode.getString("poseidon_btn");
+                    strings[7] = jsonChildNode.getString("hexagon_pattern_btn");
+                    strings[8] = jsonChildNode.getString("hexagon_cabinets_btn");
+                    strings[9] = jsonChildNode.getString("trident_unlock_btn");
+                    strings[10] = jsonChildNode.getString("exit_btn");
+
+                    newItemObject = new AtlantisRoomStatus(strings);
                     jsonObject.add(newItemObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -693,24 +507,24 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
         protected Integer doInBackground(String... params){
             HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
             String urlStr = "http://" + ipAddress + "/EscapeControl/updateAtlantis.php?id=" + 1 +
-                            "&tritons_key=" + tritons_key_str +
-                            "&room_door_1_2=" + room_door_1_2_str +
-                            "&holy_molly=" + holy_molly_str +
-                            "&poseidons_chest=" + poseidons_chest_str +
-                            "&hexagon_cabinets=" + hexagon_cabinets_str +
-                            "&waterfall_btn=" + waterfall_btn_str +
-                            "&tritons_key_btn=" + tritons_key_btn_str +
-                            "&column1_btn=0"+
-                            "&column2_btn=" + column2_btn_str +
-                            "&column3_btn=" + column3_btn_str +
-                            "&room_door_1_2_btn=" + room_door_1_2_btn_str +
-                            "&holy_molly_btn=" + holy_molly_btn_str +
-                            "&poseidon_btn=" + poseidon_btn_str +
-                            "&hexagon_pattern_btn=" + hexagon_pattern_btn_str +
-                            "&hexagon_cabinets_btn=" + hexagon_cabinets_btn_str +
-                            "&trident_unlock_btn=" + trident_unlock_btn_str +
-                            "&exit_btn=" + exit_btn_str +
-                            "&reset_btn=" + reset_btn_str;
+                            "&tritons_key=" + "0" +
+                            "&room_door_1_2=" + "0" +
+                            "&holy_molly=" + "0" +
+                            "&poseidons_chest=" + "0" +
+                            "&hexagon_cabinets=" + "0" +
+                            "&waterfall_btn=" + switchCombat_str[0] +
+                            "&tritons_key_btn=" + switchCombat_str[1] +
+                            "&column1_btn=" + "0" +
+                            "&column2_btn=" + switchCombat_str[2] +
+                            "&column3_btn=" + switchCombat_str[3] +
+                            "&room_door_1_2_btn=" + switchCombat_str[4] +
+                            "&holy_molly_btn=" + switchCombat_str[5] +
+                            "&poseidon_btn=" + switchCombat_str[6] +
+                            "&hexagon_pattern_btn=" + switchCombat_str[7] +
+                            "&hexagon_cabinets_btn=" + switchCombat_str[8] +
+                            "&trident_unlock_btn=" + switchCombat_str[9] +
+                            "&exit_btn=" + switchCombat_str[10] +
+                            "&reset_btn=" + "0";
             HttpPost httpPost = new HttpPost(urlStr);
             try {
                 HttpResponse response = httpClient.execute(httpPost);
@@ -761,95 +575,19 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
         }
     }
 
-    public void updateTxts(){
-        if (waterfall_btn_str.equals("0")){
-            waterfall_txt_str = "Off";
-        }
-        else{
-            waterfall_txt_str = "On";
-        }
+    public void updateSwitches(){
+        for (int i=0; i<numberOfButtons; i++){
+            if (switchCombat_str[i].equals("0")){
+                textViews_str[i] = "Off";
+                switchCompats[i].setChecked(false);
+            }
+            else{
+                textViews_str[i] = "On";
+                switchCompats[i].setChecked(true);
+            }
 
-        if (tritons_key_btn_str.equals("0")){
-            tritons_key_txt_str = "Off";
+            textViews[i].setText(textViews_str[i]);
         }
-        else{
-            tritons_key_txt_str = "On";
-        }
-
-        if (column2_btn_str.equals("0")){
-            column2_txt_str = "Off";
-        }
-        else{
-            column2_txt_str = "On";
-        }
-
-        if (column3_btn_str.equals("0")){
-            column3_txt_str = "Off";
-        }
-        else{
-            column3_txt_str = "On";
-        }
-
-        if (room_door_1_2_btn_str.equals("0")){
-            room_door_1_2_txt_str = "Off";
-        }
-        else{
-            room_door_1_2_txt_str = "On";
-        }
-
-        if (holy_molly_btn_str.equals("0")){
-            holy_molly_txt_str = "Off";
-        }
-        else{
-            holy_molly_txt_str = "On";
-        }
-
-        if (poseidon_btn_str.equals("0")){
-            poseidon_txt_str = "Off";
-        }
-        else{
-            poseidon_txt_str = "On";
-        }
-
-        if (hexagon_pattern_btn_str.equals("0")){
-            hexagon_pattern_txt_str = "Off";
-        }
-        else{
-            hexagon_pattern_txt_str = "On";
-        }
-
-        if (hexagon_cabinets_btn_str.equals("0")){
-            hexagon_cabinets_txt_str = "Off";
-        }
-        else{
-            hexagon_cabinets_txt_str = "On";
-        }
-
-        if (trident_unlock_btn_str.equals("0")){
-            trident_unlock_txt_str = "Off";
-        }
-        else{
-            trident_unlock_txt_str = "On";
-        }
-
-        if (exit_btn_str.equals("0")){
-            exit_txt_str = "Off";
-        }
-        else{
-            exit_txt_str = "On";
-        }
-
-        waterfall_txt.setText(waterfall_txt_str);
-        tritons_key_txt.setText(tritons_key_txt_str);
-        column2_txt.setText(column2_txt_str);
-        column3_txt.setText(column3_txt_str);
-        room_door_1_2_txt.setText(room_door_1_2_txt_str);
-        holy_molly_txt.setText(holy_molly_txt_str);
-        poseidon_txt.setText(poseidon_txt_str);
-        hexagon_pattern_txt.setText(hexagon_pattern_txt_str);
-        hexagon_cabinets_txt.setText(hexagon_cabinets_txt_str);
-        trident_unlock_txt.setText(trident_unlock_txt_str);
-        exit_txt.setText(exit_txt_str);
     }
 
     public void showAToast (String message){

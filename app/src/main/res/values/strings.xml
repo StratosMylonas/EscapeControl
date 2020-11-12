@@ -22,7 +22,7 @@
     <string name="states_header">States</string>
     <string name="actions_header">Actions</string>
     <string name="exit">Exit</string>
-    <string name="reset">Reset</string>
+    <string name="reset">Reset All Buttons</string>
 
     <!--    Atlantis    -->
     <string name="atlantis_background">Atlantis Background</string>
@@ -44,9 +44,9 @@
     <string name="mansion_background">Mansion Background</string>
     <string name="mansion_logo">Mansion Logo</string>
     <string name="mansion_header">HAUNTED MANSION</string>
-    <string name="mansion_tarrot_combination_1">1st Tarrot\nCombination</string>
-    <string name="mansion_tarrot_combination_2">2nd Tarrot\nCombination</string>
-    <string name="mansion_tarrot_combination_3">3rd Tarrot\nCombination</string>
+    <string name="mansion_tarrot_combination_1">1st Tarrot Combination</string>
+    <string name="mansion_tarrot_combination_2">2nd Tarrot Combination</string>
+    <string name="mansion_tarrot_combination_3">3rd Tarrot Combination</string>
     <string name="mansion_radio_on">Radio</string>
     <string name="mansion_doll">Doll</string>
     <string name="mansion_shelf1">Shelf 1</string>

@@ -61,6 +61,19 @@
                 app:backgroundTint="#00FFFFFF"
                 app:srcCompat="@drawable/gear" />
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/gameover_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:layout_gravity="start"
+                android:scaleX="1.5"
+                android:scaleY="1.5"
+                android:contentDescription="@string/main_settings_gear"
+                app:backgroundTint="#00FFFFFF"
+                app:srcCompat="@drawable/logo" />
+
         </FrameLayout>
 
         <FrameLayout

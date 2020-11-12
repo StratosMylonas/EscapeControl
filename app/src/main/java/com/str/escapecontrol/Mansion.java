@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.apache.http.HttpResponse;
@@ -53,24 +54,17 @@ public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnR
 
     private Timer timer;
     private Mansion.AsyncDataClass jsonAsync;
+
     String ipAddress;
+    static int numberOfButtons = 9;
 
-    Button tarrot_combination_1_btn, tarrot_combination_2_btn, tarrot_combination_3_btn, radio_on_btn,
-            doll_btn, shelf_1_btn, shelf_2_btn, window_doors_btn, exit_btn, reset_btn;
+    SwitchCompat[] switchCompats = new SwitchCompat[numberOfButtons];
+    TextView[] textViews = new TextView[numberOfButtons];
 
-    String mirror_drawer_str = "0", mirror_cabinet_str = "0", living_room_door_str = "0",
-            kids_room_door_str = "0", passage_str = "0", window_doors_str = "0", tarrot_combination_1_btn_str = "0",
-            tarrot_combination_2_btn_str = "0", tarrot_combination_3_btn_str = "0", radio_on_btn_str = "0",
-            doll_btn_str = "0", shelf_1_btn_str = "0", shelf_2_btn_str = "0",
-            window_doors_btn_str = "0", exit_btn_str = "0", reset_btn_str = "0";
+    String[] switchCombat_str = new String[numberOfButtons];
+    String[] textViews_str = new String[numberOfButtons];
 
-    TextView tarrot_combination_1_txt, tarrot_combination_2_txt, tarrot_combination_3_txt, radio_on_txt,
-             doll_txt, shelf_1_txt, shelf_2_txt, window_doors_txt, exit_txt;
-
-    String tarrot_combination_1_txt_str = "Off", tarrot_combination_2_txt_str = "Off", tarrot_combination_3_txt_str = "Off",
-            radio_on_txt_str = "Off", doll_txt_str = "Off", shelf_1_txt_str = "Off", shelf_2_txt_str = "Off",
-            window_doors_txt_str = "Off", exit_txt_str = "Off";
-
+    Button resetBtn;
     TextView statusTxt;
     ImageView statusImg;
     SwipeRefreshLayout swipeRefreshLayout;
@@ -84,15 +78,15 @@ public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnR
         setContentView(R.layout.activity_mansion);
 
         getIpAddress();
-        findIds();
+        setup();
         animateStatusImage();
         setRepeatingAsyncTask();
         dialog = new ProgressDialog(Mansion.this);
         onClickListeners();
-        updateTxts();
+        updateSwitches();
     }
 
-    void animateStatusImage() {
+    void animateStatusImage(){
         statusTxt.setText("Status: Offline");
         statusImg = findViewById(R.id.statusImg);
         ObjectAnimator fadeOut = ObjectAnimator.ofFloat(statusImg, "alpha", 1f, .3f);
@@ -132,181 +126,64 @@ public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnR
         database.close();
     }
 
-    void findIds(){
+    void setup(){
+        //find ids
+        switchCompats[0] = findViewById(R.id.tarrotCombination1Switch);
+        switchCompats[1] = findViewById(R.id.tarrotCombination2Switch);
+        switchCompats[2] = findViewById(R.id.tarrotCombination3Switch);
+        switchCompats[3] = findViewById(R.id.radioSwitch);
+        switchCompats[4] = findViewById(R.id.dollSwitch);
+        switchCompats[5] = findViewById(R.id.shelf1Switch);
+        switchCompats[6] = findViewById(R.id.shelf2Switch);
+        switchCompats[7] = findViewById(R.id.windowDoorsSwitch);
+        switchCompats[8] = findViewById(R.id.exitSwitch);
+
+        resetBtn = findViewById(R.id.reset_btn);
+
         //TextViews
+        textViews[0] = findViewById(R.id.tarrotCombination1StatusTxt);
+        textViews[1] = findViewById(R.id.tarrotCombination2StatusTxt);
+        textViews[2] = findViewById(R.id.tarrotCombination3StatusTxt);
+        textViews[3] = findViewById(R.id.radioStatusTxt);
+        textViews[4] = findViewById(R.id.dollStatusTxt);
+        textViews[5] = findViewById(R.id.shelf1StatusTxt);
+        textViews[6] = findViewById(R.id.shelf2StatusTxt);
+        textViews[7] = findViewById(R.id.windowDoorsStatusTxt);
+        textViews[8] = findViewById(R.id.exitStatusTxt);
+
         statusTxt = findViewById(R.id.serverStatus);
-        tarrot_combination_1_txt = findViewById(R.id.tarrot_combination_1_txt);
-        tarrot_combination_2_txt = findViewById(R.id.tarrot_combination_2_txt);
-        tarrot_combination_3_txt = findViewById(R.id.tarrot_combination_3_txt);
-        radio_on_txt = findViewById(R.id.radio_on_txt);
-        doll_txt = findViewById(R.id.doll_txt);
-        shelf_1_txt = findViewById(R.id.shelf_1_txt);
-        shelf_2_txt = findViewById(R.id.shelf_2_txt);
-        window_doors_txt = findViewById(R.id.window_doors_txt);
-        exit_txt = findViewById(R.id.exit_txt);
 
-        //Buttons
-        tarrot_combination_1_btn = findViewById(R.id.tarrot_combination_1_btn);
-        tarrot_combination_2_btn = findViewById(R.id.tarrot_combination_2_btn);
-        tarrot_combination_3_btn = findViewById(R.id.tarrot_combination_3_btn);
-        radio_on_btn = findViewById(R.id.radio_on_btn);
-        doll_btn = findViewById(R.id.doll_btn);
-        shelf_1_btn = findViewById(R.id.shelf_1_btn);
-        shelf_2_btn = findViewById(R.id.shelf_2_btn);
-        window_doors_btn = findViewById(R.id.window_doors_btn);
-        exit_btn = findViewById(R.id.exit_btn);
-        reset_btn = findViewById(R.id.reset_btn);
-
-        //Swipe Refrash
+        //Swipe Refresh
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
+        //initialise arrays of texts
+        for (int i=0; i<numberOfButtons; i++){
+            switchCombat_str[i] = "0";
+            textViews_str[i] = "Off";
+        }
+
     }
 
     void onClickListeners(){
-        tarrot_combination_1_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tarrot_combination_1_btn_str.equals("1")) {
-                    tarrot_combination_1_btn_str = "0";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    tarrot_combination_1_btn_str = "1";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
 
-        tarrot_combination_2_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tarrot_combination_2_btn_str.equals("1")) {
-                    tarrot_combination_2_btn_str = "0";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    tarrot_combination_2_btn_str = "1";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
+        for (int i=0; i<numberOfButtons; i++){
+            switchCompats[i].setOnClickListener(new MyButtonOnClickListener(i) {
+                @Override
+                public void onClick(View view){
+                    if (switchCombat_str[index].equals("1")){
+                        switchCombat_str[index] = "0";
+                    }
+                    else{
+                        switchCombat_str[index] = "1";
+                    }
 
-        tarrot_combination_3_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (tarrot_combination_3_btn_str.equals("1")) {
-                    tarrot_combination_3_btn_str = "0";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
                     updateDatabaseAsyncTask.execute("");
                 }
-                else {
-                    tarrot_combination_3_btn_str = "1";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
+            });
+        }
 
-        radio_on_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (radio_on_btn_str.equals("1")) {
-                    radio_on_btn_str = "0";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    radio_on_btn_str = "1";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        doll_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (doll_btn_str.equals("1")) {
-                    doll_btn_str = "0";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    doll_btn_str = "1";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        shelf_1_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (shelf_1_btn_str.equals("1")) {
-                    shelf_1_btn_str = "0";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    shelf_1_btn_str = "1";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        shelf_2_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (shelf_2_btn_str.equals("1")) {
-                    shelf_2_btn_str = "0";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    shelf_2_btn_str = "1";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        window_doors_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (window_doors_btn_str.equals("1")) {
-                    window_doors_btn_str = "0";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    window_doors_btn_str = "1";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        exit_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (exit_btn_str.equals("1")) {
-                    exit_btn_str = "0";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-                else {
-                    exit_btn_str = "1";
-                    Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        reset_btn.setOnClickListener(new View.OnClickListener() {
+        resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Mansion.this);
@@ -314,17 +191,9 @@ public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnR
                 alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        reset_btn_str = "0";
-                        tarrot_combination_1_btn_str = "0";
-                        tarrot_combination_2_btn_str = "0";
-                        tarrot_combination_3_btn_str = "0";
-                        radio_on_btn_str = "0";
-                        doll_btn_str = "0";
-                        shelf_1_btn_str = "0";
-                        shelf_2_btn_str = "0";
-                        window_doors_btn_str = "0";
-                        exit_btn_str = "0";
-
+                        for (int index=0; index<numberOfButtons; index++){
+                            switchCombat_str[index] = "0";
+                        }
                         Mansion.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mansion.UpdateDatabaseAsyncTask();
                         updateDatabaseAsyncTask.execute("");
                     }
@@ -521,23 +390,16 @@ public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnR
                 return;
             }
 
-            tarrot_combination_1_btn_str = roomObject.getTarrot_combination_1_btn();
-            tarrot_combination_2_btn_str = roomObject.getTarrot_combination_2_btn();
-            tarrot_combination_3_btn_str = roomObject.getTarrot_combination_3_btn();
-            radio_on_btn_str = roomObject.getRadio_on_btn();
-            doll_btn_str = roomObject.getDoll_btn();
-            shelf_1_btn_str = roomObject.getShelf_1_btn();
-            shelf_2_btn_str = roomObject.getShelf_2_btn();
-            window_doors_btn_str = roomObject.getWindow_doors_btn();
-            exit_btn_str = roomObject.getExit_btn();
-            reset_btn_str = roomObject.getReset_btn();
+            for (int i=0; i<numberOfButtons; i++) {
+                switchCombat_str[i] = roomObject.getBtnString(i);
+            }
 
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     endToast = false;
                     setStatus(true);
-                    updateTxts();
+                    updateSwitches();
                 }
             });
         }
@@ -575,26 +437,18 @@ public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnR
                 JSONObject jsonChildNode;
                 try {
                     jsonChildNode = jsonArray.getJSONObject(i);
-                    String mirror_drawer = jsonChildNode.getString("mirror_drawer");
-                    String mirror_cabinet = jsonChildNode.getString("mirror_cabinet");
-                    String living_room_door = jsonChildNode.getString("living_room_door");
-                    String kids_room_door = jsonChildNode.getString("kids_room_door");
-                    String passage = jsonChildNode.getString("passage");
-                    String window_doors = jsonChildNode.getString("window_doors");
-                    String tarrot_combination_1_btn = jsonChildNode.getString("tarrot_combination_1_btn");
-                    String tarrot_combination_2_btn = jsonChildNode.getString("tarrot_combination_2_btn");
-                    String tarrot_combination_3_btn = jsonChildNode.getString("tarrot_combination_3_btn");
-                    String radio_on_btn = jsonChildNode.getString("radio_on_btn");
-                    String doll_btn = jsonChildNode.getString("doll_btn");
-                    String shelf_1_btn = jsonChildNode.getString("shelf_1_btn");
-                    String shelf_2_btn = jsonChildNode.getString("shelf_2_btn");
-                    String window_doors_btn = jsonChildNode.getString("window_doors_btn");
-                    String exit_btn = jsonChildNode.getString("exit_btn");
-                    String reset_btn = jsonChildNode.getString("reset_btn");
-                    newItemObject = new MansionRoomStatus(mirror_drawer, mirror_cabinet, living_room_door, kids_room_door, passage,
-                                                          window_doors, tarrot_combination_1_btn, tarrot_combination_2_btn,
-                                                          tarrot_combination_3_btn, radio_on_btn, doll_btn, shelf_1_btn, shelf_2_btn,
-                                                          window_doors_btn, exit_btn, reset_btn);
+                    String[] strings = new String[numberOfButtons];
+                    strings[0] = jsonChildNode.getString("tarrot_combination_1_btn");
+                    strings[1] = jsonChildNode.getString("tarrot_combination_2_btn");
+                    strings[2] = jsonChildNode.getString("tarrot_combination_3_btn");
+                    strings[3] = jsonChildNode.getString("radio_on_btn");
+                    strings[4] = jsonChildNode.getString("doll_btn");
+                    strings[5] = jsonChildNode.getString("shelf_1_btn");
+                    strings[6] = jsonChildNode.getString("shelf_2_btn");
+                    strings[7] = jsonChildNode.getString("window_doors_btn");
+                    strings[8] = jsonChildNode.getString("exit_btn");
+
+                    newItemObject = new MansionRoomStatus(strings);
                     jsonObject.add(newItemObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -647,22 +501,22 @@ public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnR
         protected Integer doInBackground(String... params){
             HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
             String urlStr = "http://" + ipAddress + "/EscapeControl/updateMansion.php?id=" + 1 +
-                    "&mirror_drawer=" + mirror_drawer_str +
-                    "&mirror_cabinet=" + mirror_cabinet_str +
-                    "&living_room_door=" + living_room_door_str +
-                    "&kids_room_door=" + kids_room_door_str +
-                    "&passage=" + passage_str +
-                    "&window_doors=" + window_doors_str +
-                    "&tarrot_combination_1_btn=" + tarrot_combination_1_btn_str +
-                    "&tarrot_combination_2_btn=" + tarrot_combination_2_btn_str +
-                    "&tarrot_combination_3_btn=" + tarrot_combination_3_btn_str +
-                    "&radio_on_btn=" + radio_on_btn_str +
-                    "&doll_btn=" + doll_btn_str +
-                    "&shelf_1_btn=" + shelf_1_btn_str +
-                    "&shelf_2_btn=" + shelf_2_btn_str +
-                    "&window_doors_btn=" + window_doors_btn_str +
-                    "&exit_btn=" + exit_btn_str +
-                    "&reset_btn=" + reset_btn_str;
+                    "&mirror_drawer=" + "0" +
+                    "&mirror_cabinet=" + "0" +
+                    "&living_room_door=" + "0" +
+                    "&kids_room_door=" + "0" +
+                    "&passage=" + "0" +
+                    "&window_doors=" + "0" +
+                    "&tarrot_combination_1_btn=" + switchCombat_str[0] +
+                    "&tarrot_combination_2_btn=" + switchCombat_str[1] +
+                    "&tarrot_combination_3_btn=" + switchCombat_str[2] +
+                    "&radio_on_btn=" + switchCombat_str[3] +
+                    "&doll_btn=" + switchCombat_str[4] +
+                    "&shelf_1_btn=" + switchCombat_str[5] +
+                    "&shelf_2_btn=" + switchCombat_str[6] +
+                    "&window_doors_btn=" + switchCombat_str[7] +
+                    "&exit_btn=" + switchCombat_str[8] +
+                    "&reset_btn=" + "0";
             HttpPost httpPost = new HttpPost(urlStr);
             try {
                 HttpResponse response = httpClient.execute(httpPost);
@@ -713,79 +567,19 @@ public class Mansion extends AppCompatActivity implements SwipeRefreshLayout.OnR
         }
     }
 
-    public void updateTxts(){
-        if (tarrot_combination_1_btn_str.equals("0")){
-            tarrot_combination_1_txt_str = "Off";
-        }
-        else{
-            tarrot_combination_1_txt_str = "On";
-        }
+    public void updateSwitches(){
+        for (int i=0; i<numberOfButtons; i++){
+            if (switchCombat_str[i].equals("0")){
+                textViews_str[i] = "Off";
+                switchCompats[i].setChecked(false);
+            }
+            else{
+                textViews_str[i] = "On";
+                switchCompats[i].setChecked(true);
+            }
 
-        if (tarrot_combination_2_btn_str.equals("0")){
-            tarrot_combination_2_txt_str = "Off";
+            textViews[i].setText(textViews_str[i]);
         }
-        else{
-            tarrot_combination_2_txt_str = "On";
-        }
-
-        if (tarrot_combination_3_btn_str.equals("0")){
-            tarrot_combination_3_txt_str = "Off";
-        }
-        else{
-            tarrot_combination_3_txt_str = "On";
-        }
-
-        if (radio_on_btn_str.equals("0")){
-            radio_on_txt_str = "Off";
-        }
-        else{
-            radio_on_txt_str = "On";
-        }
-
-        if (doll_btn_str.equals("0")){
-            doll_txt_str = "Off";
-        }
-        else{
-            doll_txt_str = "On";
-        }
-
-        if (shelf_1_btn_str.equals("0")){
-            shelf_1_txt_str = "Off";
-        }
-        else{
-            shelf_1_txt_str = "On";
-        }
-
-        if (shelf_2_btn_str.equals("0")){
-            shelf_2_txt_str = "Off";
-        }
-        else{
-            shelf_2_txt_str = "On";
-        }
-
-        if (window_doors_btn_str.equals("0")){
-            window_doors_txt_str = "Off";
-        }
-        else{
-            window_doors_txt_str = "On";
-        }
-
-        if (exit_btn_str.equals("0")){
-            exit_txt_str = "Off";
-        }
-        else{
-            exit_txt_str = "On";
-        }
-
-        tarrot_combination_1_txt.setText(tarrot_combination_1_txt_str);
-        tarrot_combination_2_txt.setText(tarrot_combination_2_txt_str);
-        tarrot_combination_3_txt.setText(tarrot_combination_3_txt_str);
-        radio_on_txt.setText(radio_on_txt_str);
-        doll_txt.setText(doll_txt_str);
-        shelf_1_txt.setText(shelf_1_txt_str);
-        shelf_2_txt.setText(shelf_2_txt_str);
-        window_doors_txt.setText(window_doors_txt_str);
-        exit_txt.setText(exit_txt_str);
     }
 
     public void showAToast (String message){

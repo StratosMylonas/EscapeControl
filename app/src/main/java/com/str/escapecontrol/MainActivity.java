@@ -72,12 +72,12 @@ public class MainActivity extends AppCompatActivity {
 
         SQLiteDatabase database = openOrCreateDatabase("escape_control", MODE_PRIVATE, null);
         database.execSQL("CREATE TABLE IF NOT EXISTS IPAddress(id INT, ip VARCHAR(20));");
-        //database.execSQL("INSERT INTO IPAddress VALUES ('192.168.11.100');");
-        Cursor cursor = database.rawQuery("SELECT ip FROM IPAddress", null);
+
+        Cursor cursor = database.rawQuery("SELECT id FROM IPAddress", null);
         if (cursor.getCount() == 0){
             database.execSQL("INSERT INTO IPAddress VALUES (1, '192.168.11.100');");
-            cursor = database.rawQuery("SELECT ip FROM IPAddress WHERE id = 1", null);
         }
+
         cursor.moveToFirst();
         cursor.close();
         database.close();
