@@ -1,12 +1,14 @@
 package com.str.escapecontrol;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -15,7 +17,14 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -41,324 +50,178 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener{
+public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private Timer timer;
     private Mission.AsyncDataClass jsonAsync;
-    Button lasers_btn, mobile_phone_btn, office_door_btn, desk_cabinet_btn, bookcase_cabinet_btn,
-           bansky_painting_btn, frame_rfid_btn, control_room_door_btn, vault_door_btn, ventilation_btn,
-           money_drop_btn, panel_numbers_btn, console_large_buttons_btn, console_metal_buttons_btn,
-           passage_btn, exit_btn, reset_btn;
-    String lasers_btn_str = "0", mobile_phone_btn_str = "0", office_door_btn_str = "0", desk_cabinet_btn_str = "0",
-           bookcase_cabinet_btn_str = "0", bansky_painting_btn_str = "0", frame_rfid_btn_str = "0",
-           control_room_door_btn_str = "0", vault_door_btn_str = "0", ventilation_btn_str = "0",
-           money_drop_btn_str = "0", panel_numbers_btn_str = "0", console_large_buttons_btn_str = "0",
-           console_metal_buttons_btn_str = "0", passage_btn_str = "0", exit_btn_str = "0", reset_btn_str = "0";
+
+    String ipAddress;
+    static int numberOfButtons = 16;
+
+    SwitchCompat[] switchCompats = new SwitchCompat[numberOfButtons];
+    TextView[] textViews = new TextView[numberOfButtons];
+
+    String[] switchCombat_str = new String[numberOfButtons];
+    String[] textViews_str = new String[numberOfButtons];
+
+    Button resetBtn;
+    TextView statusTxt;
+    ImageView statusImg;
     SwipeRefreshLayout swipeRefreshLayout;
     ProgressDialog dialog;
-    boolean firstTimeLoading;
+    boolean firstTimeLoading, endToast = false;
+    Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mission);
-        findIds();
+
+        getIpAddress();
+        setup();
+        animateStatusImage();
         setRepeatingAsyncTask();
         dialog = new ProgressDialog(Mission.this);
         onClickListeners();
+        updateSwitches();
     }
 
-    void findIds(){
-        lasers_btn = findViewById(R.id.mission_lasers_btn);
-        mobile_phone_btn = findViewById(R.id.mission_mobile_phone_btn);
-        office_door_btn = findViewById(R.id.mission_office_door_btn);
-        desk_cabinet_btn = findViewById(R.id.mission_desk_cabinet_btn);
-        bookcase_cabinet_btn = findViewById(R.id.mission_bookcase_cabinet_btn);
-        bansky_painting_btn = findViewById(R.id.mission_bansky_painting_btn);
-        frame_rfid_btn = findViewById(R.id.mission_frame_rfid_btn);
-        control_room_door_btn = findViewById(R.id.mission_control_room_door_btn);
-        vault_door_btn = findViewById(R.id.mission_vault_door_btn);
-        ventilation_btn = findViewById(R.id.mission_ventilation_btn);
-        money_drop_btn = findViewById(R.id.mission_money_drop_btn);
-        panel_numbers_btn = findViewById(R.id.mission_panel_numbers_btn);
-        console_large_buttons_btn = findViewById(R.id.mission_console_large_buttons_btn);
-        console_metal_buttons_btn = findViewById(R.id.mission_console_metal_buttons_btn);
-        passage_btn = findViewById(R.id.passage_btn);
-        exit_btn = findViewById(R.id.exit_btn);
-        reset_btn = findViewById(R.id.reset_btn);
+    void animateStatusImage(){
+        statusTxt.setText("Status: Offline");
+        statusImg = findViewById(R.id.statusImg);
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(statusImg, "alpha", 1f, .3f);
+        fadeOut.setDuration(1000);
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(statusImg, "alpha", .3f, 1f);
+        fadeIn.setDuration(1000);
 
+        final AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(fadeIn).after(fadeOut);
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                animatorSet.start();
+            }
+        });
+        animatorSet.start();
+    }
+
+    void setStatus(boolean state){
+        if (state){
+            statusTxt.setText("Status: Online");
+            statusImg.setImageResource(R.drawable.online);
+        }
+        else{
+            statusTxt.setText("Status: Offline");
+            statusImg.setImageResource(R.drawable.offline);
+        }
+    }
+
+    void getIpAddress(){
+        final SQLiteDatabase database = openOrCreateDatabase("escape_control", MODE_PRIVATE, null);
+        Cursor cursor = database.rawQuery("SELECT ip FROM IPAddress WHERE id = 1", null);
+        cursor.moveToFirst();
+        ipAddress = cursor.getString(0);
+        cursor.close();
+        database.close();
+    }
+
+    void setup(){
+        //find ids
+        switchCompats[0] = findViewById(R.id.lasersSwitch);
+        switchCompats[1] = findViewById(R.id.mobilePhoneSwitch);
+        switchCompats[2] = findViewById(R.id.officeDoorSwitch);
+        switchCompats[3] = findViewById(R.id.deskCabinetSwitch);
+        switchCompats[4] = findViewById(R.id.bookcaseCabinetSwitch);
+        switchCompats[5] = findViewById(R.id.banskyPaintingSwitch);
+        switchCompats[6] = findViewById(R.id.frameRfidSwitch);
+        switchCompats[7] = findViewById(R.id.controlRoomDoorSwitch);
+        switchCompats[8] = findViewById(R.id.vaultDoorSwitch);
+        switchCompats[9] = findViewById(R.id.ventilationSwitch);
+        switchCompats[10] = findViewById(R.id.moneyDropSwitch);
+        switchCompats[11] = findViewById(R.id.panelNumbersSwitch);
+        switchCompats[12] = findViewById(R.id.consoleLargeButtonsSwitch);
+        switchCompats[13] = findViewById(R.id.consoleMetalButtonsSwitch);
+        switchCompats[14] = findViewById(R.id.passageSwitch);
+        switchCompats[15] = findViewById(R.id.exitSwitch);
+
+        resetBtn = findViewById(R.id.reset_btn);
+
+        //TextViews
+        textViews[0] = findViewById(R.id.lasersStatusTxt);
+        textViews[1] = findViewById(R.id.mobilePhoneStatusTxt);
+        textViews[2] = findViewById(R.id.officeDoorStatusTxt);
+        textViews[3] = findViewById(R.id.deskCabinetStatusTxt);
+        textViews[4] = findViewById(R.id.bookcaseCabinetStatusTxt);
+        textViews[5] = findViewById(R.id.banskyPaintingStatusTxt);
+        textViews[6] = findViewById(R.id.frameRfidStatusTxt);
+        textViews[7] = findViewById(R.id.controlRoomDoorStatusTxt);
+        textViews[8] = findViewById(R.id.vaultDoorStatusTxt);
+        textViews[9] = findViewById(R.id.ventilationStatusTxt);
+        textViews[10] = findViewById(R.id.moneyDropStatusTxt);
+        textViews[11] = findViewById(R.id.panelNumbersStatusTxt);
+        textViews[12] = findViewById(R.id.consoleLargeButtonsStatusTxt);
+        textViews[13] = findViewById(R.id.consoleMetalButtonsStatusTxt);
+        textViews[14] = findViewById(R.id.passageStatusTxt);
+        textViews[15] = findViewById(R.id.exitStatusTxt);
+
+        statusTxt = findViewById(R.id.serverStatus);
+
+        //Swipe Refresh
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
+        //initialise arrays of texts
+        for (int i=0; i<numberOfButtons; i++){
+            switchCombat_str[i] = "0";
+            textViews_str[i] = "Off";
+        }
+
     }
 
     void onClickListeners(){
-        lasers_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (lasers_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    lasers_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
+
+        for (int i=0; i<numberOfButtons; i++){
+            switchCompats[i].setOnClickListener(new MyButtonOnClickListener(i) {
+                @Override
+                public void onClick(View view){
+                    if (switchCombat_str[index].equals("1")){
+                        switchCombat_str[index] = "0";
+                    }
+                    else{
+                        switchCombat_str[index] = "1";
+                    }
+
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
                     updateDatabaseAsyncTask.execute("");
                 }
-            }
-        });
+            });
+        }
 
-        mobile_phone_btn.setOnClickListener(new View.OnClickListener() {
+        resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (mobile_phone_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    mobile_phone_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        office_door_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (office_door_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    office_door_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        desk_cabinet_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (desk_cabinet_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    desk_cabinet_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        bookcase_cabinet_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (bookcase_cabinet_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    bookcase_cabinet_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        bansky_painting_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (bansky_painting_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    bansky_painting_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        frame_rfid_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (frame_rfid_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    frame_rfid_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        control_room_door_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (control_room_door_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    control_room_door_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        vault_door_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (vault_door_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    vault_door_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        ventilation_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (ventilation_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    ventilation_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        money_drop_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (money_drop_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    money_drop_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        panel_numbers_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (panel_numbers_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    panel_numbers_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        console_large_buttons_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (console_large_buttons_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    console_large_buttons_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        console_metal_buttons_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (console_metal_buttons_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    console_metal_buttons_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        passage_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (passage_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    passage_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        exit_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (exit_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    exit_btn_str = "1";
-                    Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        reset_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (reset_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                } else {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Mission.this);
-                    alertDialogBuilder.setMessage("Do you want to reset?");
-                    alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            reset_btn_str = "1";
-                            Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
-                            updateDatabaseAsyncTask.execute("");
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Mission.this);
+                alertDialogBuilder.setMessage("Do you want to reset?");
+                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        for (int index=0; index<numberOfButtons; index++){
+                            switchCombat_str[index] = "0";
                         }
-                    });
+                        Mission.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Mission.UpdateDatabaseAsyncTask();
+                        updateDatabaseAsyncTask.execute("");
+                    }
+                });
 
-                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
+                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
 
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 
@@ -377,6 +240,7 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
             dialog.dismiss();
         }
         setRepeatingAsyncTask();
+        endToast = false;
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -390,7 +254,7 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
     }
 
     boolean checkWifi() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Mansion.CONNECTIVITY_SERVICE);
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Mission.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
         if (networkInfo != null) {
@@ -419,11 +283,12 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
         return false;
     }
 
-    private class AsyncDataClass extends AsyncTask<String, Void, MissionRoomStatus> {
+    private class AsyncDataClass extends AsyncTask<Void, Void, MissionRoomStatus> {
 
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
+
             if (firstTimeLoading) {
                 dialog.setMessage("Loading...");
                 dialog.show();
@@ -431,34 +296,57 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
         }
 
         @Override
-        protected MissionRoomStatus doInBackground(String... params) {
-            byte[] address = {(byte) 192, (byte) 168, (byte) 1, (byte) 199};
+        protected MissionRoomStatus doInBackground(Void... params) {
             try {
-                InetAddress addr = InetAddress.getByAddress(address);
+                InetAddress addr = InetAddress.getByName(ipAddress);
                 if (!addr.isReachable(2000)) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showAToast("Server not reachable\nCheck IP Address from settings");
+                        }
+                    });
                     return null;
                 }
             } catch (UnknownHostException e) {
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAToast("Connection to server failed\nCheck IP Address from settings");
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
-            HttpPost httpPost = new HttpPost("http://192.168.1.199/EscapeControl/dbconnector.php?table_name=mission");
+            HttpPost httpPost = new HttpPost("http://" + ipAddress + "/EscapeControl/dbconnector.php?table_name=mission");
             String jsonResult = "";
             try {
                 HttpResponse response = httpClient.execute(httpPost);
                 StatusLine statusLine = response.getStatusLine();
                 if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                     jsonResult = inputStreamToString(response.getEntity().getContent()).toString();
-                    System.out.println("Returned Json object " + jsonResult);
+                    //System.out.println("Returned Json object " + jsonResult);
                 }
 
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAToast("Connection to server failed");
+                    }
+                });
             } catch (HttpHostConnectException e){
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAToast("Connection to server failed\nCheck IP Address from settings");
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -467,8 +355,6 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Connection to server failed", Toast.LENGTH_SHORT);
-                        toast.show();
                         if (jsonAsync != null){
                             jsonAsync.cancel(true);
                         }
@@ -483,7 +369,7 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
                 return null;
             }
 
-            System.out.println("Resulted Value: " + jsonResult);
+            //System.out.println("Resulted Value: " + jsonResult);
             List<MissionRoomStatus> parsedObject = returnParsedJsonObject(jsonResult);
             if (parsedObject == null) {
                 return null;
@@ -499,26 +385,37 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
             super.onPostExecute(roomObject);
 
             if (roomObject == null) {
+                if (jsonAsync != null){
+                    jsonAsync.cancel(true);
+                }
+                if (timer != null) {
+                    timer.cancel();
+                }
+                if (dialog.isShowing()){
+                    dialog.dismiss();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setStatus(false);
+                    }
+                });
+
                 return;
             }
 
-            lasers_btn_str = roomObject.getLasers_btn();
-            mobile_phone_btn_str = roomObject.getMobile_phone_btn();
-            office_door_btn_str = roomObject.getOffice_door_btn();
-            desk_cabinet_btn_str = roomObject.getDesk_cabinet_btn();
-            bookcase_cabinet_btn_str = roomObject.getBookcase_cabinet_btn();
-            bansky_painting_btn_str = roomObject.getBansky_painting_btn();
-            frame_rfid_btn_str = roomObject.getFrame_rfid_btn();
-            control_room_door_btn_str = roomObject.getControl_room_door_btn();
-            vault_door_btn_str = roomObject.getVault_door_btn();
-            ventilation_btn_str = roomObject.getVentilation_btn();
-            money_drop_btn_str = roomObject.getMoney_drop_btn();
-            panel_numbers_btn_str = roomObject.getPanel_numbers_btn();
-            console_large_buttons_btn_str = roomObject.getConsole_large_buttons_btn();
-            console_metal_buttons_btn_str = roomObject.getConsole_metal_buttons_btn();
-            passage_btn_str = roomObject.getPassage_btn();
-            exit_btn_str = roomObject.getExit_btn();
-            reset_btn_str = roomObject.getReset_btn();
+            for (int i=0; i<numberOfButtons; i++) {
+                switchCombat_str[i] = roomObject.getBtnString(i);
+            }
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    endToast = false;
+                    setStatus(true);
+                    updateSwitches();
+                }
+            });
         }
 
         private StringBuilder inputStreamToString(InputStream is) {
@@ -554,27 +451,25 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
                 JSONObject jsonChildNode;
                 try {
                     jsonChildNode = jsonArray.getJSONObject(i);
-                    String lasers_btn = jsonChildNode.getString("lasers_btn");
-                    String mobile_phone_btn = jsonChildNode.getString("mobile_phone_btn");
-                    String office_door_btn = jsonChildNode.getString("office_door_btn");
-                    String desk_cabinet_btn = jsonChildNode.getString("desk_cabinet_btn");
-                    String bookcage_cabinet_btn = jsonChildNode.getString("bookcage_cabinet_btn");
-                    String bansky_painting_btn = jsonChildNode.getString("bansky_painting_btn");
-                    String frame_rfid_btn = jsonChildNode.getString("frame_rfid_btn");
-                    String control_room_door_btn = jsonChildNode.getString("control_room_door_btn");
-                    String vault_door_btn = jsonChildNode.getString("vault_door_btn");
-                    String ventilation_btn = jsonChildNode.getString("ventilation_btn");
-                    String money_drop_btn = jsonChildNode.getString("money_drop_btn");
-                    String panel_numbers_btn = jsonChildNode.getString("panel_numbers_btn");
-                    String console_large_buttons_btn = jsonChildNode.getString("console_large_buttons_btn");
-                    String console_metal_buttons_btn = jsonChildNode.getString("console_metal_buttons_btn");
-                    String passage_btn = jsonChildNode.getString("passage_btn");
-                    String exit_btn = jsonChildNode.getString("exit_btn");
-                    String reset_btn = jsonChildNode.getString("reset_btn");
-                    newItemObject = new MissionRoomStatus(lasers_btn, mobile_phone_btn, office_door_btn, desk_cabinet_btn,
-                                                          bookcage_cabinet_btn, bansky_painting_btn, frame_rfid_btn, control_room_door_btn,
-                                                          vault_door_btn, ventilation_btn, money_drop_btn, panel_numbers_btn,
-                                                          console_large_buttons_btn, console_metal_buttons_btn, passage_btn, exit_btn, reset_btn);
+                    String[] strings = new String[numberOfButtons];
+                    strings[0] = jsonChildNode.getString("lasers_btn");
+                    strings[1] = jsonChildNode.getString("mobile_phone_btn");
+                    strings[2] = jsonChildNode.getString("office_door_btn");
+                    strings[3] = jsonChildNode.getString("desk_cabinet_btn");
+                    strings[4] = jsonChildNode.getString("bookcage_cabinet_btn");
+                    strings[5] = jsonChildNode.getString("bansky_painting_btn");
+                    strings[6] = jsonChildNode.getString("frame_rfid_btn");
+                    strings[7] = jsonChildNode.getString("control_room_door_btn");
+                    strings[8] = jsonChildNode.getString("vault_door_btn");
+                    strings[9] = jsonChildNode.getString("ventilation_btn");
+                    strings[10] = jsonChildNode.getString("money_drop_btn");
+                    strings[11] = jsonChildNode.getString("panel_numbers_btn");
+                    strings[12] = jsonChildNode.getString("console_large_buttons_btn");
+                    strings[13] = jsonChildNode.getString("console_metal_buttons_btn");
+                    strings[14] = jsonChildNode.getString("passage_btn");
+                    strings[15] = jsonChildNode.getString("exit_btn");
+
+                    newItemObject = new MissionRoomStatus(strings);
                     jsonObject.add(newItemObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -604,7 +499,9 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
                         public void run() {
                             try {
                                 jsonAsync = new Mission.AsyncDataClass();
-                                jsonAsync.execute("");
+                                jsonAsync.execute();
+                                Mission.checkIPAddress checkIPAddress = new Mission.checkIPAddress();
+                                checkIPAddress.execute();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -616,8 +513,7 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
             timer.schedule(task, 0, 1000);
         }
         else {
-            Toast toast = Toast.makeText(getApplicationContext(), "Connection with Server failed", Toast.LENGTH_SHORT);
-            toast.show();
+            showAToast("Connection to server failed");
         }
     }
 
@@ -625,37 +521,94 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
 
         protected Integer doInBackground(String... params){
             HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
-            String urlStr = "http://192.168.1.199/EscapeControl/updateMission.php?id=" + 1 +
-                    "&lasers_btn=" + lasers_btn_str +
-                    "&mobile_phone_btn=" + mobile_phone_btn_str +
-                    "&office_door_btn=" + office_door_btn_str +
-                    "&desk_cabinet_btn=" + desk_cabinet_btn_str +
-                    "&bookcage_cabinet_btn=" + bookcase_cabinet_btn_str +
-                    "&bansky_painting_btn=" + bansky_painting_btn_str +
-                    "&frame_rfid_btn=" + frame_rfid_btn_str +
-                    "&control_room_door_btn=" + control_room_door_btn_str +
-                    "&vault_door_btn=" + vault_door_btn_str +
-                    "&ventilation_btn=" + ventilation_btn_str +
-                    "&money_drop_btn=" + money_drop_btn_str +
-                    "&panel_numbers_btn=" + panel_numbers_btn_str +
-                    "&console_large_buttons_btn=" + console_large_buttons_btn_str +
-                    "&console_metal_buttons_btn=" + console_metal_buttons_btn_str +
-                    "&passage_btn=" + passage_btn_str +
-                    "&exit_btn=" + exit_btn_str +
-                    "&reset_btn=" + reset_btn_str;
+            String urlStr = "http://" + ipAddress + "/EscapeControl/updateMission.php?id=" + 1 +
+                    "&lasers_btn=" + switchCombat_str[0] +
+                    "&mobile_phone_btn=" + switchCombat_str[1] +
+                    "&office_door_btn=" + switchCombat_str[2] +
+                    "&desk_cabinet_btn=" + switchCombat_str[3] +
+                    "&bookcage_cabinet_btn=" + switchCombat_str[4] +
+                    "&bansky_painting_btn=" + switchCombat_str[5] +
+                    "&frame_rfid_btn=" + switchCombat_str[6] +
+                    "&control_room_door_btn=" + switchCombat_str[7] +
+                    "&vault_door_btn=" + switchCombat_str[8] +
+                    "&ventilation_btn=" + switchCombat_str[9] +
+                    "&money_drop_btn=" + switchCombat_str[10] +
+                    "&panel_numbers_btn=" + switchCombat_str[11] +
+                    "&console_large_buttons_btn=" + switchCombat_str[12] +
+                    "&console_metal_buttons_btn=" + switchCombat_str[13] +
+                    "&passage_btn=" + switchCombat_str[14] +
+                    "&exit_btn=" + switchCombat_str[15] +
+                    "&reset_btn=" + "0";
             HttpPost httpPost = new HttpPost(urlStr);
             try {
                 HttpResponse response = httpClient.execute(httpPost);
                 System.out.println((response.getEntity().getContent()).toString());
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAToast("Failed. Try Again");
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+            endToast = false;
             System.out.println("Data Sent");
 
             return 0;
+        }
+    }
+
+    private class checkIPAddress extends AsyncTask<Void, Void, Boolean>{
+        @Override
+        protected Boolean doInBackground(Void... params){
+            try {
+                InetAddress addr = InetAddress.getByName(ipAddress);
+                if (!addr.isReachable(1000)) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!endToast) {
+                                showAToast("Connection to server failed\nCheck IP Address from settings");
+                                endToast = true;
+                            }
+                        }
+                    });
+                    return false;
+                }
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return true;
+        }
+    }
+
+    public void updateSwitches(){
+        for (int i=0; i<numberOfButtons; i++){
+            if (switchCombat_str[i].equals("0")){
+                textViews_str[i] = "Off";
+                switchCompats[i].setChecked(false);
+            }
+            else{
+                textViews_str[i] = "On";
+                switchCompats[i].setChecked(true);
+            }
+
+            textViews[i].setText(textViews_str[i]);
+        }
+    }
+
+    public void showAToast (String message){
+        if (!endToast) {
+            toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+            toast.show();
+            endToast = true;
         }
     }
 }

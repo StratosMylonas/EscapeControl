@@ -100,7 +100,6 @@
                             android:orientation="vertical">
 
                             <LinearLayout
-                                android:id="@+id/waterfall"
                                 android:layout_width="match_parent"
                                 android:layout_height="80dp"
                                 android:orientation="horizontal"

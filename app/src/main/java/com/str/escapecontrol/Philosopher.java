@@ -1,12 +1,14 @@
 package com.str.escapecontrol;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -15,7 +17,14 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -45,204 +54,160 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
 
     private Timer timer;
     private Philosopher.AsyncDataClass jsonAsync;
-    Button coins_prop_btn, harp_btn, passage_btn, knight_video_btn, holding_keys_door_btn,
-           books_open_btn, books_close_btn, mirror_btn, exit_btn, reset_btn;
-    String coins_prop_btn_str = "0", harp_btn_str = "0", passage_btn_str, knight_video_btn_str = "0",
-            holding_keys_door_btn_str = "0", books_open_btn_str = "0", books_close_btn_str = "0",
-            mirror_btn_str = "0", exit_btn_str = "0", reset_btn_str = "0";
+
+    String ipAddress;
+    static int numberOfButtons = 9;
+
+    SwitchCompat[] switchCompats = new SwitchCompat[numberOfButtons];
+    TextView[] textViews = new TextView[numberOfButtons];
+
+    String[] switchCombat_str = new String[numberOfButtons];
+    String[] textViews_str = new String[numberOfButtons];
+
+    Button resetBtn;
+    TextView statusTxt;
+    ImageView statusImg;
     SwipeRefreshLayout swipeRefreshLayout;
     ProgressDialog dialog;
-    boolean firstTimeLoading;
+    boolean firstTimeLoading, endToast = false;
+    Toast toast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_philosopher);
-        findIds();
+
+        getIpAddress();
+        setup();
+        animateStatusImage();
         setRepeatingAsyncTask();
         dialog = new ProgressDialog(Philosopher.this);
         onClickListeners();
+        updateSwitches();
     }
 
-    void findIds(){
-        coins_prop_btn = findViewById(R.id.philosophers_coins_prop_btn);
-        harp_btn = findViewById(R.id.philosophers_harp_btn);
-        passage_btn = findViewById(R.id.philosophers_passage_btn);
-        knight_video_btn = findViewById(R.id.philosophers_knight_video_btn);
-        holding_keys_door_btn = findViewById(R.id.philosophers_holding_keys_door_btn);
-        books_open_btn = findViewById(R.id.philosophers_books_open_btn);
-        books_close_btn = findViewById(R.id.philosophers_books_close_btn);
-        mirror_btn = findViewById(R.id.philosophers_mirror_btn);
-        exit_btn = findViewById(R.id.exit_btn);
-        reset_btn = findViewById(R.id.reset_btn);
+    void animateStatusImage(){
+        statusTxt.setText("Status: Offline");
+        statusImg = findViewById(R.id.statusImg);
+        ObjectAnimator fadeOut = ObjectAnimator.ofFloat(statusImg, "alpha", 1f, .3f);
+        fadeOut.setDuration(1000);
+        ObjectAnimator fadeIn = ObjectAnimator.ofFloat(statusImg, "alpha", .3f, 1f);
+        fadeIn.setDuration(1000);
 
+        final AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(fadeIn).after(fadeOut);
+        animatorSet.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                animatorSet.start();
+            }
+        });
+        animatorSet.start();
+    }
+
+    void setStatus(boolean state){
+        if (state){
+            statusTxt.setText("Status: Online");
+            statusImg.setImageResource(R.drawable.online);
+        }
+        else{
+            statusTxt.setText("Status: Offline");
+            statusImg.setImageResource(R.drawable.offline);
+        }
+    }
+
+    void getIpAddress(){
+        final SQLiteDatabase database = openOrCreateDatabase("escape_control", MODE_PRIVATE, null);
+        Cursor cursor = database.rawQuery("SELECT ip FROM IPAddress WHERE id = 1", null);
+        cursor.moveToFirst();
+        ipAddress = cursor.getString(0);
+        cursor.close();
+        database.close();
+    }
+
+    void setup(){
+        //find ids
+        switchCompats[0] = findViewById(R.id.coinsPropSwitch);
+        switchCompats[1] = findViewById(R.id.harpSwitch);
+        switchCompats[2] = findViewById(R.id.passageSwitch);
+        switchCompats[3] = findViewById(R.id.knightVideoSwitch);
+        switchCompats[4] = findViewById(R.id.holdingKeysDoorSwitch);
+        switchCompats[5] = findViewById(R.id.booksOpenSwitch);
+        switchCompats[6] = findViewById(R.id.booksCloseSwitch);
+        switchCompats[7] = findViewById(R.id.mirrorSwitch);
+        switchCompats[8] = findViewById(R.id.exitSwitch);
+
+        resetBtn = findViewById(R.id.reset_btn);
+
+        //TextViews
+        textViews[0] = findViewById(R.id.coinsPropStatusTxt);
+        textViews[1] = findViewById(R.id.harpStatusTxt);
+        textViews[2] = findViewById(R.id.passageStatusTxt);
+        textViews[3] = findViewById(R.id.knightVideoStatusTxt);
+        textViews[4] = findViewById(R.id.holdingKeysDoorStatusTxt);
+        textViews[5] = findViewById(R.id.booksOpenStatusTxt);
+        textViews[6] = findViewById(R.id.booksCloseStatusTxt);
+        textViews[7] = findViewById(R.id.mirrorStatusTxt);
+        textViews[8] = findViewById(R.id.exitStatusTxt);
+
+        statusTxt = findViewById(R.id.serverStatus);
+
+        //Swipe Refresh
         swipeRefreshLayout = findViewById(R.id.swipeRefreshLayout);
+
+        //initialise arrays of texts
+        for (int i=0; i<numberOfButtons; i++){
+            switchCombat_str[i] = "0";
+            textViews_str[i] = "Off";
+        }
+
     }
 
     void onClickListeners(){
-        coins_prop_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (coins_prop_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    coins_prop_btn_str = "1";
-                    Philosopher.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Philosopher.UpdateDatabaseAsyncTask();
+
+        for (int i=0; i<numberOfButtons; i++){
+            switchCompats[i].setOnClickListener(new MyButtonOnClickListener(i) {
+                @Override
+                public void onClick(View view){
+                    if (switchCombat_str[index].equals("1")){
+                        switchCombat_str[index] = "0";
+                    }
+                    else{
+                        switchCombat_str[index] = "1";
+                    }
+
+                    UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Philosopher.UpdateDatabaseAsyncTask();
                     updateDatabaseAsyncTask.execute("");
                 }
-            }
-        });
+            });
+        }
 
-        harp_btn.setOnClickListener(new View.OnClickListener() {
+        resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (harp_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    harp_btn_str = "1";
-                    Philosopher.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Philosopher.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        passage_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (passage_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    passage_btn_str = "1";
-                    Philosopher.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Philosopher.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        knight_video_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (knight_video_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    knight_video_btn_str = "1";
-                    Philosopher.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Philosopher.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        holding_keys_door_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (holding_keys_door_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    holding_keys_door_btn_str = "1";
-                    Philosopher.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Philosopher.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        books_open_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (books_open_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    books_open_btn_str = "1";
-                    Philosopher.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Philosopher.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        books_close_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (books_close_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    books_close_btn_str = "1";
-                    Philosopher.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Philosopher.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        mirror_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (mirror_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    mirror_btn_str = "1";
-                    Philosopher.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Philosopher.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        exit_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (exit_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                else {
-                    exit_btn_str = "1";
-                    Philosopher.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Philosopher.UpdateDatabaseAsyncTask();
-                    updateDatabaseAsyncTask.execute("");
-                }
-            }
-        });
-
-        reset_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (reset_btn_str.equals("1")) {
-                    Toast toast = Toast.makeText(getApplicationContext(), "Already pressed", Toast.LENGTH_SHORT);
-                    toast.show();
-                } else {
-                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Philosopher.this);
-                    alertDialogBuilder.setMessage("Do you want to reset?");
-                    alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            reset_btn_str = "1";
-                            Philosopher.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Philosopher.UpdateDatabaseAsyncTask();
-                            updateDatabaseAsyncTask.execute("");
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Philosopher.this);
+                alertDialogBuilder.setMessage("Do you want to reset?");
+                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        for (int index=0; index<numberOfButtons; index++){
+                            switchCombat_str[index] = "0";
                         }
-                    });
+                        Philosopher.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Philosopher.UpdateDatabaseAsyncTask();
+                        updateDatabaseAsyncTask.execute("");
+                    }
+                });
 
-                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.cancel();
-                        }
-                    });
+                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.cancel();
+                    }
+                });
 
-                    AlertDialog alertDialog = alertDialogBuilder.create();
-                    alertDialog.show();
-                }
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
             }
         });
 
@@ -261,6 +226,7 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
             dialog.dismiss();
         }
         setRepeatingAsyncTask();
+        endToast = false;
         swipeRefreshLayout.setRefreshing(false);
     }
 
@@ -303,11 +269,12 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
         return false;
     }
 
-    private class AsyncDataClass extends AsyncTask<String, Void, PhilosopherRoomStatus> {
+    private class AsyncDataClass extends AsyncTask<Void, Void, PhilosopherRoomStatus> {
 
         @Override
         protected void onPreExecute(){
             super.onPreExecute();
+
             if (firstTimeLoading) {
                 dialog.setMessage("Loading...");
                 dialog.show();
@@ -315,34 +282,57 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
         }
 
         @Override
-        protected PhilosopherRoomStatus doInBackground(String... params) {
-            byte[] address = {(byte) 192, (byte) 168, (byte) 1, (byte) 199};
+        protected PhilosopherRoomStatus doInBackground(Void... params) {
             try {
-                InetAddress addr = InetAddress.getByAddress(address);
+                InetAddress addr = InetAddress.getByName(ipAddress);
                 if (!addr.isReachable(2000)) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showAToast("Server not reachable\nCheck IP Address from settings");
+                        }
+                    });
                     return null;
                 }
             } catch (UnknownHostException e) {
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAToast("Connection to server failed\nCheck IP Address from settings");
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
-            HttpPost httpPost = new HttpPost("http://192.168.1.199/EscapeControl/dbconnector.php?table_name=philosopher");
+            HttpPost httpPost = new HttpPost("http://" + ipAddress + "/EscapeControl/dbconnector.php?table_name=philosopher");
             String jsonResult = "";
             try {
                 HttpResponse response = httpClient.execute(httpPost);
                 StatusLine statusLine = response.getStatusLine();
                 if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
                     jsonResult = inputStreamToString(response.getEntity().getContent()).toString();
-                    System.out.println("Returned Json object " + jsonResult);
+                    //System.out.println("Returned Json object " + jsonResult);
                 }
 
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAToast("Connection to server failed");
+                    }
+                });
             } catch (HttpHostConnectException e){
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAToast("Connection to server failed\nCheck IP Address from settings");
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -351,8 +341,6 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Connection to server failed", Toast.LENGTH_SHORT);
-                        toast.show();
                         if (jsonAsync != null){
                             jsonAsync.cancel(true);
                         }
@@ -367,7 +355,7 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
                 return null;
             }
 
-            System.out.println("Resulted Value: " + jsonResult);
+            //System.out.println("Resulted Value: " + jsonResult);
             List<PhilosopherRoomStatus> parsedObject = returnParsedJsonObject(jsonResult);
             if (parsedObject == null) {
                 return null;
@@ -383,19 +371,37 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
             super.onPostExecute(roomObject);
 
             if (roomObject == null) {
+                if (jsonAsync != null){
+                    jsonAsync.cancel(true);
+                }
+                if (timer != null) {
+                    timer.cancel();
+                }
+                if (dialog.isShowing()){
+                    dialog.dismiss();
+                }
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        setStatus(false);
+                    }
+                });
+
                 return;
             }
 
-            coins_prop_btn_str = roomObject.getCoins_prop_btn();
-            harp_btn_str = roomObject.getHarp_btn();
-            passage_btn_str = roomObject.getPassage_btn();
-            knight_video_btn_str = roomObject.getKnight_video_btn();
-            holding_keys_door_btn_str = roomObject.getHolding_keys_door_btn();
-            books_close_btn_str = roomObject.getBooks_close_btn();
-            books_open_btn_str = roomObject.getBooks_open_btn();
-            mirror_btn_str = roomObject.getMirror_btn();
-            reset_btn_str = roomObject.getReset_btn();
-            exit_btn_str = roomObject.getExit_btn();
+            for (int i=0; i<numberOfButtons; i++) {
+                switchCombat_str[i] = roomObject.getBtnString(i);
+            }
+
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    endToast = false;
+                    setStatus(true);
+                    updateSwitches();
+                }
+            });
         }
 
         private StringBuilder inputStreamToString(InputStream is) {
@@ -431,18 +437,18 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
                 JSONObject jsonChildNode;
                 try {
                     jsonChildNode = jsonArray.getJSONObject(i);
-                    String coins_prop = jsonChildNode.getString("coins_prop_btn");
-                    String harp_btn = jsonChildNode.getString("harp_btn");
-                    String passage_btn = jsonChildNode.getString("passage_btn");
-                    String knight_video_btn = jsonChildNode.getString("knight_video_btn");
-                    String holding_keys_door_btn = jsonChildNode.getString("holding_keys_door_btn");
-                    String books_open_btn = jsonChildNode.getString("books_open_btn");
-                    String books_close_btn = jsonChildNode.getString("books_close_btn");
-                    String mirror_btn = jsonChildNode.getString("mirror_btn");
-                    String exit_btn = jsonChildNode.getString("exit_btn");
-                    String reset_btn = jsonChildNode.getString("reset_btn");
-                    newItemObject = new PhilosopherRoomStatus(coins_prop, harp_btn, passage_btn, knight_video_btn, holding_keys_door_btn,
-                                                          books_open_btn, books_close_btn, mirror_btn, exit_btn, reset_btn);
+                    String[] strings = new String[numberOfButtons];
+                    strings[0] = jsonChildNode.getString("coins_prop_btn");
+                    strings[1] = jsonChildNode.getString("harp_btn");
+                    strings[2] = jsonChildNode.getString("passage_btn");
+                    strings[3] = jsonChildNode.getString("knight_video_btn");
+                    strings[4] = jsonChildNode.getString("holding_keys_door_btn");
+                    strings[5] = jsonChildNode.getString("books_open_btn");
+                    strings[6] = jsonChildNode.getString("books_close_btn");
+                    strings[7] = jsonChildNode.getString("mirror_btn");
+                    strings[8] = jsonChildNode.getString("exit_btn");
+
+                    newItemObject = new PhilosopherRoomStatus(strings);
                     jsonObject.add(newItemObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -472,7 +478,9 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
                         public void run() {
                             try {
                                 jsonAsync = new Philosopher.AsyncDataClass();
-                                jsonAsync.execute("");
+                                jsonAsync.execute();
+                                Philosopher.checkIPAddress checkIPAddress = new Philosopher.checkIPAddress();
+                                checkIPAddress.execute();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -484,8 +492,7 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
             timer.schedule(task, 0, 1000);
         }
         else {
-            Toast toast = Toast.makeText(getApplicationContext(), "Connection with Server failed", Toast.LENGTH_SHORT);
-            toast.show();
+            showAToast("Connection to server failed");
         }
     }
 
@@ -493,31 +500,87 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
 
         protected Integer doInBackground(String... params){
             HttpClient httpClient = new DefaultHttpClient(new BasicHttpParams());
-            String urlStr = "http://192.168.1.199/EscapeControl/updatePhilosopher.php?id=" + 1 +
-                    "&coins_prop_btn=" + coins_prop_btn_str +
-                    "&harp_btn=" + harp_btn_str +
-                    "&passage_btn=" + passage_btn_str +
-                    "&knight_video_btn=" + knight_video_btn_str +
-                    "&holding_keys_door_btn=" + holding_keys_door_btn_str +
-                    "&books_open_btn=" + books_open_btn_str +
-                    "&books_close_btn=" + books_close_btn_str +
-                    "&mirror_btn=" + mirror_btn_str +
-                    "&passage_btn=" + passage_btn_str +
-                    "&exit_btn=" + exit_btn_str +
-                    "&reset_btn=" + reset_btn_str;
+            String urlStr = "http://" + ipAddress + "/EscapeControl/updatePhilosopher.php?id=" + 1 +
+                    "&coins_prop_btn=" + switchCombat_str[0] +
+                    "&harp_btn=" + switchCombat_str[1] +
+                    "&passage_btn=" + switchCombat_str[2] +
+                    "&knight_video_btn=" + switchCombat_str[3] +
+                    "&holding_keys_door_btn=" + switchCombat_str[4] +
+                    "&books_open_btn=" + switchCombat_str[5] +
+                    "&books_close_btn=" + switchCombat_str[6] +
+                    "&mirror_btn=" + switchCombat_str[7] +
+                    "&exit_btn=" + switchCombat_str[8] +
+                    "&reset_btn=" + "0";
             HttpPost httpPost = new HttpPost(urlStr);
             try {
                 HttpResponse response = httpClient.execute(httpPost);
                 System.out.println((response.getEntity().getContent()).toString());
             } catch (ClientProtocolException e) {
                 e.printStackTrace();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showAToast("Failed. Try Again");
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
+            endToast = false;
             System.out.println("Data Sent");
 
             return 0;
+        }
+    }
+
+    private class checkIPAddress extends AsyncTask<Void, Void, Boolean>{
+        @Override
+        protected Boolean doInBackground(Void... params){
+            try {
+                InetAddress addr = InetAddress.getByName(ipAddress);
+                if (!addr.isReachable(1000)) {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            if (!endToast) {
+                                showAToast("Connection to server failed\nCheck IP Address from settings");
+                                endToast = true;
+                            }
+                        }
+                    });
+                    return false;
+                }
+            } catch (UnknownHostException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return true;
+        }
+    }
+
+    public void updateSwitches(){
+        for (int i=0; i<numberOfButtons; i++){
+            if (switchCombat_str[i].equals("0")){
+                textViews_str[i] = "Off";
+                switchCompats[i].setChecked(false);
+            }
+            else{
+                textViews_str[i] = "On";
+                switchCompats[i].setChecked(true);
+            }
+
+            textViews[i].setText(textViews_str[i]);
+        }
+    }
+
+    public void showAToast (String message){
+        if (!endToast) {
+            toast = Toast.makeText(this, message, Toast.LENGTH_SHORT);
+            toast.show();
+            endToast = true;
         }
     }
 }
