@@ -4,19 +4,23 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,11 +69,13 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
     String[] textViews_str = new String[numberOfButtons];
 
     Button resetBtn;
+    String resetStr;
+
     TextView statusTxt;
     ImageView statusImg;
     SwipeRefreshLayout swipeRefreshLayout;
     ProgressDialog dialog;
-    boolean firstTimeLoading, endToast = false;
+    boolean firstTimeLoading, endToast = false, paused = false;
     Toast toast;
 
     @Override
@@ -166,14 +172,14 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             textViews_str[i] = "Off";
         }
 
+        resetStr = "0";
     }
 
     void onClickListeners(){
-
         for (int i=0; i<numberOfButtons; i++){
-            switchCompats[i].setOnClickListener(new MyButtonOnClickListener(i) {
+            switchCompats[i].setOnCheckedChangeListener(new MySwitchOnChangeStateListener(i) {
                 @Override
-                public void onClick(View view){
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                     if (switchCombat_str[index].equals("1")){
                         switchCombat_str[index] = "0";
                     }
@@ -185,33 +191,51 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                     updateDatabaseAsyncTask.execute("");
                 }
             });
+
+            switchCompats[i].setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    if (motionEvent.getAction() == android.view.MotionEvent.ACTION_DOWN)
+                        paused = true;
+                    else if (motionEvent.getAction() == android.view.MotionEvent.ACTION_UP) {
+                        paused = false;
+                    }
+                    return false;
+                }
+            });
         }
 
         resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Atlantis.this);
-                alertDialogBuilder.setMessage("Do you want to reset?");
-                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        for (int index=0; index<numberOfButtons; index++){
-                            switchCombat_str[index] = "0";
+                if (resetStr.equals("0")) {
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Atlantis.this, R.style.MyAlertDialogStyle);
+                    alertDialogBuilder.setMessage("Do you want to reset?");
+                    alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            for (int index = 0; index < numberOfButtons; index++) {
+                                switchCombat_str[index] = "0";
+                            }
+                            resetStr = "1";
+                            Atlantis.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
+                            updateDatabaseAsyncTask.execute("");
+
                         }
-                        Atlantis.UpdateDatabaseAsyncTask updateDatabaseAsyncTask = new Atlantis.UpdateDatabaseAsyncTask();
-                        updateDatabaseAsyncTask.execute("");
-                    }
-                });
+                    });
+                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
 
-                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        dialogInterface.cancel();
-                    }
-                });
-
-                AlertDialog alertDialog = alertDialogBuilder.create();
-                alertDialog.show();
+                    AlertDialog alertDialog = alertDialogBuilder.create();
+                    alertDialog.show();
+                }
+                else{
+                    showAToast("Already pressed");
+                }
             }
         });
 
@@ -273,7 +297,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
         return false;
     }
 
-    private class AsyncDataClass extends AsyncTask<Void, Void, AtlantisRoomStatus> {
+    private class AsyncDataClass extends AsyncTask<Void, Void, RoomStatus> {
 
         @Override
         protected void onPreExecute(){
@@ -286,7 +310,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
         }
 
         @Override
-        protected AtlantisRoomStatus doInBackground(Void... params) {
+        protected RoomStatus doInBackground(Void... params) {
             try {
                 InetAddress addr = InetAddress.getByName(ipAddress);
                 if (!addr.isReachable(2000)) {
@@ -294,6 +318,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                         @Override
                         public void run() {
                             showAToast("Server not reachable\nCheck IP Address from settings");
+                            setStatus(false);
                         }
                     });
                     return null;
@@ -304,6 +329,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                     @Override
                     public void run() {
                         showAToast("Connection to server failed\nCheck IP Address from settings");
+                        setStatus(false);
                     }
                 });
             } catch (IOException e) {
@@ -327,6 +353,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                     @Override
                     public void run() {
                         showAToast("Connection to server failed");
+                        setStatus(false);
                     }
                 });
             } catch (HttpHostConnectException e){
@@ -335,6 +362,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                     @Override
                     public void run() {
                         showAToast("Connection to server failed\nCheck IP Address from settings");
+                        setStatus(false);
                     }
                 });
             } catch (IOException e) {
@@ -360,18 +388,18 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             }
 
             //System.out.println("Resulted Value: " + jsonResult);
-            List<AtlantisRoomStatus> parsedObject = returnParsedJsonObject(jsonResult);
+            List<RoomStatus> parsedObject = returnParsedJsonObject(jsonResult);
             if (parsedObject == null) {
                 return null;
             }
-            AtlantisRoomStatus roomObject;
+            RoomStatus roomObject;
             roomObject = parsedObject.get(0);
 
             return roomObject;
         }
 
         @Override
-        protected void onPostExecute(AtlantisRoomStatus roomObject) {
+        protected void onPostExecute(RoomStatus roomObject) {
             super.onPostExecute(roomObject);
 
             if (roomObject == null) {
@@ -397,6 +425,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             for (int i=0; i<numberOfButtons; i++) {
                 switchCombat_str[i] = roomObject.getBtnString(i);
             }
+            resetStr = roomObject.getBtnString(numberOfButtons);
 
             runOnUiThread(new Runnable() {
                 @Override
@@ -422,10 +451,10 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
             return answer;
         }
 
-        private List<AtlantisRoomStatus> returnParsedJsonObject(String result) {
-            List<AtlantisRoomStatus> jsonObject = new ArrayList<>();
+        private List<RoomStatus> returnParsedJsonObject(String result) {
+            List<RoomStatus> jsonObject = new ArrayList<>();
             JSONArray jsonArray = null;
-            AtlantisRoomStatus newItemObject;
+            RoomStatus newItemObject;
 
             try {
                 jsonArray = new JSONArray(result);
@@ -441,7 +470,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                 JSONObject jsonChildNode;
                 try {
                     jsonChildNode = jsonArray.getJSONObject(i);
-                    String[] strings = new String[numberOfButtons];
+                    String[] strings = new String[numberOfButtons+1];
                     strings[0] = jsonChildNode.getString("waterfall_btn");
                     strings[1] = jsonChildNode.getString("tritons_key_btn");
                     strings[2] = jsonChildNode.getString("column2_btn");
@@ -453,8 +482,9 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                     strings[8] = jsonChildNode.getString("hexagon_cabinets_btn");
                     strings[9] = jsonChildNode.getString("trident_unlock_btn");
                     strings[10] = jsonChildNode.getString("exit_btn");
+                    strings[11] = jsonChildNode.getString("reset_btn");
 
-                    newItemObject = new AtlantisRoomStatus(strings);
+                    newItemObject = new RoomStatus(strings, numberOfButtons);
                     jsonObject.add(newItemObject);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -483,10 +513,12 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                         @Override
                         public void run() {
                             try {
-                                jsonAsync = new Atlantis.AsyncDataClass();
-                                jsonAsync.execute();
-                                Atlantis.checkIPAddress checkIPAddress = new Atlantis.checkIPAddress();
-                                checkIPAddress.execute();
+                                if (!paused) {
+                                    jsonAsync = new Atlantis.AsyncDataClass();
+                                    jsonAsync.execute();
+                                    Atlantis.checkIPAddress checkIPAddress = new Atlantis.checkIPAddress();
+                                    checkIPAddress.execute();
+                                }
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -499,6 +531,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
         }
         else {
             showAToast("Connection to server failed");
+            setStatus(false);
         }
     }
 
@@ -524,7 +557,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                             "&hexagon_cabinets_btn=" + switchCombat_str[8] +
                             "&trident_unlock_btn=" + switchCombat_str[9] +
                             "&exit_btn=" + switchCombat_str[10] +
-                            "&reset_btn=" + "0";
+                            "&reset_btn=" + resetStr;
             HttpPost httpPost = new HttpPost(urlStr);
             try {
                 HttpResponse response = httpClient.execute(httpPost);
@@ -559,6 +592,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                         public void run() {
                             if (!endToast) {
                                 showAToast("Connection to server failed\nCheck IP Address from settings");
+                                setStatus(false);
                                 endToast = true;
                             }
                         }
@@ -577,6 +611,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
 
     public void updateSwitches(){
         for (int i=0; i<numberOfButtons; i++){
+            switchCompats[i].setOnCheckedChangeListener(null);
             if (switchCombat_str[i].equals("0")){
                 textViews_str[i] = "Off";
                 switchCompats[i].setChecked(false);
@@ -585,7 +620,7 @@ public class Atlantis extends AppCompatActivity implements SwipeRefreshLayout.On
                 textViews_str[i] = "On";
                 switchCompats[i].setChecked(true);
             }
-
+            onClickListeners();
             textViews[i].setText(textViews_str[i]);
         }
     }
