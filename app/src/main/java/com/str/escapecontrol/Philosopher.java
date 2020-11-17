@@ -59,7 +59,7 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
     private Philosopher.AsyncDataClass jsonAsync;
 
     String ipAddress;
-    static int numberOfButtons = 9;
+    static int numberOfButtons = 10;
 
     SwitchCompat[] switchCompats = new SwitchCompat[numberOfButtons];
     TextView[] textViews = new TextView[numberOfButtons];
@@ -140,8 +140,9 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
         switchCompats[4] = findViewById(R.id.holdingKeysDoorSwitch);
         switchCompats[5] = findViewById(R.id.booksOpenSwitch);
         switchCompats[6] = findViewById(R.id.booksCloseSwitch);
-        switchCompats[7] = findViewById(R.id.mirrorSwitch);
-        switchCompats[8] = findViewById(R.id.exitSwitch);
+        switchCompats[7] = findViewById(R.id.bookcaseDoorSwitch);
+        switchCompats[8] = findViewById(R.id.mirrorSwitch);
+        switchCompats[9] = findViewById(R.id.exitSwitch);
 
         resetBtn = findViewById(R.id.reset_btn);
 
@@ -153,8 +154,9 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
         textViews[4] = findViewById(R.id.holdingKeysDoorStatusTxt);
         textViews[5] = findViewById(R.id.booksOpenStatusTxt);
         textViews[6] = findViewById(R.id.booksCloseStatusTxt);
-        textViews[7] = findViewById(R.id.mirrorStatusTxt);
-        textViews[8] = findViewById(R.id.exitStatusTxt);
+        textViews[7] = findViewById(R.id.bookcaseDoorStatusTxt);
+        textViews[8] = findViewById(R.id.mirrorStatusTxt);
+        textViews[9] = findViewById(R.id.exitStatusTxt);
 
         statusTxt = findViewById(R.id.serverStatus);
 
@@ -473,9 +475,10 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
                     strings[4] = jsonChildNode.getString("holding_keys_door_btn");
                     strings[5] = jsonChildNode.getString("books_open_btn");
                     strings[6] = jsonChildNode.getString("books_close_btn");
-                    strings[7] = jsonChildNode.getString("mirror_btn");
-                    strings[8] = jsonChildNode.getString("exit_btn");
-                    strings[9] = jsonChildNode.getString("reset_btn");
+                    strings[7] = jsonChildNode.getString("bookcase_door_btn");
+                    strings[8] = jsonChildNode.getString("mirror_btn");
+                    strings[9] = jsonChildNode.getString("exit_btn");
+                    strings[10] = jsonChildNode.getString("reset_btn");
 
                     newItemObject = new RoomStatus(strings, numberOfButtons);
                     jsonObject.add(newItemObject);
@@ -540,8 +543,9 @@ public class Philosopher extends AppCompatActivity implements SwipeRefreshLayout
                     "&holding_keys_door_btn=" + switchCombat_str[4] +
                     "&books_open_btn=" + switchCombat_str[5] +
                     "&books_close_btn=" + switchCombat_str[6] +
-                    "&mirror_btn=" + switchCombat_str[7] +
-                    "&exit_btn=" + switchCombat_str[8] +
+                    "&bookcase_door_btn=" + switchCombat_str[7] +
+                    "&mirror_btn=" + switchCombat_str[8] +
+                    "&exit_btn=" + switchCombat_str[9] +
                     "&reset_btn=" + resetStr;
             HttpPost httpPost = new HttpPost(urlStr);
             try {

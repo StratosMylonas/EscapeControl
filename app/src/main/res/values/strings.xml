@@ -84,6 +84,7 @@
     <string name="philosophers_holding_keys_door">Holding Keys Door</string>
     <string name="philosophers_books_open">Books Open</string>
     <string name="philosophers_books_close">Books Close</string>
+    <string name="philosophers_bookcase_door">Bookcase Door</string>
     <string name="philosophers_mirror">Mirror</string>
 
 </resources>
