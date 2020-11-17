@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@color/colorPrimaryDark"
+    android:background="@drawable/layout_bg"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
         <TextView
@@ -27,7 +27,9 @@
             android:textColor="@color/colorAccent"
             android:textColorHint="#999999"
             android:hint="default 192.168.11.100"
+            android:digits="1234567890."
             android:layout_gravity="center_horizontal"
-            />
+            android:inputType="numberDecimal"
+            android:autofillHints="IP Address" />
 
     </RelativeLayout>
