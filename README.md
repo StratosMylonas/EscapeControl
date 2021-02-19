@@ -8,4 +8,4 @@ The app is used to control several Arduino functions inside these 4 rooms room, 
 
 Sample images:
 
-<img src="https://github.com/StratosMylonas/EscapeControl/blob/master/screenshots/activityScreen.png" width="245" height="500"> <img src="https://github.com/StratosMylonas/EscapeControl/blob/master/screenshots/mainMenuScreen.png" width="245" height="500"> <img src="https://github.com/StratosMylonas/EscapeControl/blob/master/screenshots/activityScreen2.png" width="245" height="500">
+<img src="https://github.com/StratosMylonas/EscapeControl/blob/master/screenshots/mainMenuScreen.png" width="245" height="500"> <img src="https://github.com/StratosMylonas/EscapeControl/blob/master/screenshots/activityScreen.png" width="245" height="500"> <img src="https://github.com/StratosMylonas/EscapeControl/blob/master/screenshots/activityScreen2.png" width="245" height="500">
