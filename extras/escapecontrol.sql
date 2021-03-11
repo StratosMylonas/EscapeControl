@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Nov 18, 2020 at 08:10 AM
+-- Generation Time: Mar 11, 2021 at 09:25 AM
 -- Server version: 5.7.31
 -- PHP Version: 7.3.21
 
@@ -117,6 +117,7 @@ CREATE TABLE IF NOT EXISTS `mission` (
   `console_large_buttons_btn` int(1) NOT NULL,
   `console_metal_buttons_btn` int(1) NOT NULL,
   `passage_btn` int(1) NOT NULL,
+  `control_entrance_door_btn` int(1) NOT NULL,
   `exit_btn` int(1) NOT NULL,
   `reset_btn` int(1) NOT NULL,
   PRIMARY KEY (`id`)
@@ -126,8 +127,8 @@ CREATE TABLE IF NOT EXISTS `mission` (
 -- Dumping data for table `mission`
 --
 
-INSERT INTO `mission` (`id`, `lasers_btn`, `mobile_phone_btn`, `office_door_btn`, `desk_cabinet_btn`, `bookcage_cabinet_btn`, `bansky_painting_btn`, `frame_rfid_btn`, `control_room_door_btn`, `vault_door_btn`, `ventilation_btn`, `money_drop_btn`, `panel_numbers_btn`, `console_large_buttons_btn`, `console_metal_buttons_btn`, `passage_btn`, `exit_btn`, `reset_btn`) VALUES
-(1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+INSERT INTO `mission` (`id`, `lasers_btn`, `mobile_phone_btn`, `office_door_btn`, `desk_cabinet_btn`, `bookcage_cabinet_btn`, `bansky_painting_btn`, `frame_rfid_btn`, `control_room_door_btn`, `vault_door_btn`, `ventilation_btn`, `money_drop_btn`, `panel_numbers_btn`, `console_large_buttons_btn`, `console_metal_buttons_btn`, `passage_btn`, `control_entrance_door_btn`, `exit_btn`, `reset_btn`) VALUES
+(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1);
 
 -- --------------------------------------------------------
 

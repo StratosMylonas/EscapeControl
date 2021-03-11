@@ -27,6 +27,7 @@
 	$console_large_buttons_btn = $_GET["console_large_buttons_btn"];
 	$console_metal_buttons_btn = $_GET["console_metal_buttons_btn"];
 	$passage_btn = $_GET["passage_btn"];
+	$control_entrance_door_btn = $_GET["control_entrance_door_btn"];
 	$exit_btn = $_GET["exit_btn"];
 	$reset_btn = $_GET["reset_btn"];
 	
@@ -46,6 +47,7 @@
 			console_large_buttons_btn = '$console_large_buttons_btn', 
 			console_metal_buttons_btn = '$console_metal_buttons_btn', 
 			passage_btn = '$passage_btn',  
+			control_entrance_door_btn = '$control_entrance_door_btn',  
 			exit_btn = '$exit_btn', 
 			reset_btn = '$reset_btn' 
 			WHERE id = $id";
