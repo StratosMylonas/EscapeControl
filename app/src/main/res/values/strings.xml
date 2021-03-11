@@ -72,6 +72,7 @@
     <string name="mission_console_large_buttons">Console Large Buttons</string>
     <string name="mission_console_metal_buttons">Console Metal Buttons</string>
     <string name="mission_passage">Passage</string>
+    <string name="mission_control_entrance_door">Control Entrance Door</string>
 
     <!--    Philosopher's Stone    -->
     <string name="philosophers_background">Philosopher\'s Stone</string>

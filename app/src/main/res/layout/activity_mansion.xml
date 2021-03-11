@@ -70,7 +70,7 @@
                 android:layout_marginTop="-30dp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"
-                android:src="@drawable/logo"
+                android:src="@drawable/logo_plain"
                 android:contentDescription="@string/logo"/>
 
             <TextView

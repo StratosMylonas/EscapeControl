@@ -58,7 +58,7 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
     private Mission.AsyncDataClass jsonAsync;
 
     String ipAddress;
-    static int numberOfButtons = 16;
+    static int numberOfButtons = 17;
 
     SwitchCompat[] switchCompats = new SwitchCompat[numberOfButtons];
     TextView[] textViews = new TextView[numberOfButtons];
@@ -146,7 +146,8 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
         switchCompats[12] = findViewById(R.id.consoleLargeButtonsSwitch);
         switchCompats[13] = findViewById(R.id.consoleMetalButtonsSwitch);
         switchCompats[14] = findViewById(R.id.passageSwitch);
-        switchCompats[15] = findViewById(R.id.exitSwitch);
+        switchCompats[15] = findViewById(R.id.controlEntranceDoorSwitch);
+        switchCompats[16] = findViewById(R.id.exitSwitch);
 
         resetBtn = findViewById(R.id.reset_btn);
 
@@ -166,7 +167,8 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
         textViews[12] = findViewById(R.id.consoleLargeButtonsStatusTxt);
         textViews[13] = findViewById(R.id.consoleMetalButtonsStatusTxt);
         textViews[14] = findViewById(R.id.passageStatusTxt);
-        textViews[15] = findViewById(R.id.exitStatusTxt);
+        textViews[15] = findViewById(R.id.controlEntranceDoorStatusTxt);
+        textViews[16] = findViewById(R.id.exitStatusTxt);
 
         statusTxt = findViewById(R.id.serverStatus);
 
@@ -494,8 +496,9 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
                     strings[12] = jsonChildNode.getString("console_large_buttons_btn");
                     strings[13] = jsonChildNode.getString("console_metal_buttons_btn");
                     strings[14] = jsonChildNode.getString("passage_btn");
-                    strings[15] = jsonChildNode.getString("exit_btn");
-                    strings[16] = jsonChildNode.getString("reset_btn");
+                    strings[15] = jsonChildNode.getString("control_entrance_door_btn");
+                    strings[16] = jsonChildNode.getString("exit_btn");
+                    strings[17] = jsonChildNode.getString("reset_btn");
 
                     newItemObject = new RoomStatus(strings, numberOfButtons);
                     jsonObject.add(newItemObject);
@@ -568,7 +571,8 @@ public class Mission extends AppCompatActivity implements SwipeRefreshLayout.OnR
                     "&console_large_buttons_btn=" + switchCombat_str[12] +
                     "&console_metal_buttons_btn=" + switchCombat_str[13] +
                     "&passage_btn=" + switchCombat_str[14] +
-                    "&exit_btn=" + switchCombat_str[15] +
+                    "&control_entrance_door_btn=" + switchCombat_str[15] +
+                    "&exit_btn=" + switchCombat_str[16] +
                     "&reset_btn=" + resetStr;
             HttpPost httpPost = new HttpPost(urlStr);
             try {
